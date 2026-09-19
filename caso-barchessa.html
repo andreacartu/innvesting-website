@@ -5,147 +5,123 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Barchessa di villa veneta — caso reale INNvesting</title>
 <link rel="stylesheet" href="css/styles.css">
-<style>
-  body { margin: 0; background: var(--color-bg); color: var(--color-text); }
-  a { color: var(--color-accent-700); text-decoration: none; }
-  a:hover { color: var(--color-accent); }
-</style>
-<style>
-  .case-link:hover { background: var(--color-accent-100) !important; }
-</style>
 </head>
 <body>
-<div style="font-family:var(--font-body);background:var(--color-bg);color:var(--color-text);overflow-x:hidden">
 
-  <header style="position:sticky;top:0;z-index:30;background:var(--color-bg);border-bottom:2px solid var(--color-divider)">
-    <div style="max-width:1240px;margin:0 auto;padding:14px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:24px">
-      <a href="index.html" style="font-family:var(--font-heading);font-weight:800;font-size:19px;letter-spacing:-0.02em;color:var(--color-text)">IN<span style="color:var(--color-accent)">N</span>vesting</a>
-      <a href="index.html#casi-reali" style="font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent)">← Tutti i casi</a>
+  <header class="site-header">
+    <div class="site-header__bar">
+      <a href="index.html" class="brand" aria-label="INNvesting"><img src="images/logo-innvesting.png" alt="INNvesting"></a>
+      <a href="index.html#realizzazioni" class="back-link">← Tutte le realizzazioni</a>
     </div>
   </header>
 
-  <section style="padding:clamp(36px,5vw,72px) 0 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
-      <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:20px">Caso reale</div>
-      <h1 style="font-size:clamp(40px,7vw,96px);line-height:0.95;letter-spacing:-0.04em;margin:0 0 clamp(28px,4vw,48px)">Barchessa di villa veneta</h1>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2px;background:var(--color-bg)">
-        <div style="background:var(--color-bg);padding:22px 24px;outline:1px solid var(--color-divider)">
-          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-700);margin-bottom:10px">Prezzo di acquisto</div>
-          <div style="font-family:var(--font-heading);font-weight:800;font-size:clamp(28px,3.4vw,38px);letter-spacing:-0.03em;color:var(--color-neutral-600)">[da confermare]</div>
-        </div>
-        <div style="background:var(--color-bg);padding:22px 24px;outline:1px solid var(--color-divider)">
-          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-700);margin-bottom:10px">Lavori di ristrutturazione</div>
-          <div style="font-family:var(--font-heading);font-weight:800;font-size:clamp(28px,3.4vw,38px);letter-spacing:-0.03em;color:var(--color-neutral-600)">[da confermare]</div>
-        </div>
-        <div style="background:var(--color-accent-100);padding:22px 24px;outline:1px solid var(--color-divider)">
-          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:10px">Prezzo di rivendita</div>
-          <div style="font-family:var(--font-heading);font-weight:800;font-size:clamp(28px,3.4vw,38px);letter-spacing:-0.03em;color:var(--color-neutral-600)">[da confermare]</div>
-        </div>
-      </div>
+  <section class="case-hero">
+    <div class="container">
+      <div class="eyebrow">N.02</div>
+      <h1>Barchessa di villa veneta</h1>
     </div>
   </section>
 
-  <section style="padding:clamp(40px,5vw,72px) 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,4vw,64px)">
+  <section class="case-intro">
+    <div class="container case-intro__grid">
       <div>
-        <h2 style="font-size:clamp(24px,2.8vw,32px);letter-spacing:-0.02em;margin:0 0 16px">Situazione di partenza</h2>
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:60ch">Questa porzione di barchessa faceva parte di una villa veneta ed era arredata secondo lo stile degli anni ottanta, con moquette, carta da parati e legni scuri, oltre a una cucina in muratura ormai datata.</p>
+        <h2>Situazione di partenza</h2>
+        <p>Questa porzione di barchessa faceva parte di una villa veneta ed era arredata secondo lo stile degli anni ottanta, con moquette, carta da parati e legni scuri, oltre a una cucina in muratura ormai datata.</p>
       </div>
-      <figure class="grayscale" style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p14.jpg" alt="Salotto arredato in stile anni ottanta, prima della ristrutturazione" style="width:100%;height:100%;object-fit:cover">
+      <figure class="case-figure">
+        <img src="images/p14.jpg" alt="Salotto arredato in stile anni ottanta, prima della ristrutturazione">
       </figure>
     </div>
   </section>
 
-  <section style="border-top:2px solid var(--color-divider);padding:clamp(40px,5vw,72px) 0;background:var(--color-surface)">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
-      <h2 style="font-size:clamp(24px,2.8vw,32px);letter-spacing:-0.02em;margin:0 0 clamp(24px,3vw,36px)">Le scelte fatte</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;background:var(--color-bg)">
-        <div style="background:var(--color-bg);padding:clamp(20px,3vw,30px);outline:1px solid var(--color-divider)">
-          <div style="font-family:var(--font-heading);font-weight:800;font-size:22px;color:var(--color-accent);margin-bottom:12px">01</div>
-          <h3 style="font-size:19px;margin:0 0 10px;letter-spacing:-0.015em">Apertura degli spazi</h3>
-          <p style="font-size:15px;line-height:1.6;margin:0">Abbattimento di alcuni muri per aumentare la luce naturale e creare ambienti piu ampi rispetto alla distribuzione originale.</p>
+  <section class="case-choices">
+    <div class="container">
+      <h2>Le scelte fatte</h2>
+      <div class="choice-grid">
+        <div class="choice-card">
+          <div class="choice-card__number">01</div>
+          <h3>Apertura degli spazi</h3>
+          <p>Abbattimento di alcuni muri per aumentare la luce naturale e creare ambienti più ampi rispetto alla distribuzione originale.</p>
         </div>
-        <div style="background:var(--color-bg);padding:clamp(20px,3vw,30px);outline:1px solid var(--color-divider)">
-          <div style="font-family:var(--font-heading);font-weight:800;font-size:22px;color:var(--color-accent);margin-bottom:12px">02</div>
-          <h3 style="font-size:19px;margin:0 0 10px;letter-spacing:-0.015em">Rispetto del contesto storico</h3>
-          <p style="font-size:15px;line-height:1.6;margin:0">Nonostante il rinnovamento importante, si e tenuto conto dell'eta e del carattere della villa, mantenendo a vista le travi in legno del tetto.</p>
+        <div class="choice-card">
+          <div class="choice-card__number">02</div>
+          <h3>Rispetto del contesto storico</h3>
+          <p>Nonostante il rinnovamento importante, si è tenuto conto dell'età e del carattere della villa, mantenendo a vista le travi in legno del tetto.</p>
         </div>
-        <div style="background:var(--color-bg);padding:clamp(20px,3vw,30px);outline:1px solid var(--color-divider)">
-          <div style="font-family:var(--font-heading);font-weight:800;font-size:22px;color:var(--color-accent);margin-bottom:12px">03</div>
-          <h3 style="font-size:19px;margin:0 0 10px;letter-spacing:-0.015em">Bagni</h3>
-          <p style="font-size:15px;line-height:1.6;margin:0">Rivestimenti colorati e decisi, giallo, blu e arancio, per dare carattere a spazi altrimenti neutri.</p>
+        <div class="choice-card">
+          <div class="choice-card__number">03</div>
+          <h3>Bagni</h3>
+          <p>Rivestimenti colorati e decisi, giallo, blu e arancio, per dare carattere a spazi altrimenti neutri.</p>
         </div>
-        <div style="background:var(--color-bg);padding:clamp(20px,3vw,30px);outline:1px solid var(--color-divider)">
-          <div style="font-family:var(--font-heading);font-weight:800;font-size:22px;color:var(--color-accent);margin-bottom:12px">04</div>
-          <h3 style="font-size:19px;margin:0 0 10px;letter-spacing:-0.015em">Cucina</h3>
-          <p style="font-size:15px;line-height:1.6;margin:0">Linea essenziale, con un unico grande mensolone a vista al posto della classica cappa e dei pensili, per un effetto piu pulito.</p>
+        <div class="choice-card">
+          <div class="choice-card__number">04</div>
+          <h3>Cucina</h3>
+          <p>Linea essenziale, con un unico grande mensolone a vista al posto della classica cappa e dei pensili, per un effetto più pulito.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section style="border-top:2px solid var(--color-divider);padding:clamp(40px,5vw,72px) 0 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:flex;align-items:baseline;gap:16px;margin-bottom:clamp(20px,3vw,32px)">
-      <h2 style="font-size:clamp(24px,2.8vw,32px);letter-spacing:-0.02em;margin:0">Prima</h2>
-      <span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-700)">Stile anni ottanta</span>
+  <section class="case-photos case-photos--divided">
+    <div class="case-photos__head">
+      <h2>Prima</h2>
+      <span class="case-photos__tag">Stile anni ottanta</span>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--color-bg)">
-      <figure class="grayscale" style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p12.jpg" alt="Stanza vuota, pavimento originale in legno scuro, prima dei lavori" style="width:100%;height:100%;object-fit:cover">
+    <div class="photo-grid">
+      <figure>
+        <img src="images/p12.jpg" alt="Stanza vuota, pavimento originale in legno scuro, prima dei lavori">
       </figure>
-      <figure class="grayscale" style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p13.jpg" alt="Ambiente in fase di svuotamento, con campioni colore sulla parete" style="width:100%;height:100%;object-fit:cover">
+      <figure>
+        <img src="images/p13.jpg" alt="Ambiente in fase di svuotamento, con campioni colore sulla parete">
       </figure>
-      <figure class="grayscale" style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p14.jpg" alt="Salotto arredato in stile anni ottanta, prima della ristrutturazione" style="width:100%;height:100%;object-fit:cover">
+      <figure>
+        <img src="images/p14.jpg" alt="Salotto arredato in stile anni ottanta, prima della ristrutturazione">
       </figure>
-      <figure class="grayscale" style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p15.jpg" alt="Salotto con arredi datati e pavimento in resina blu, prima dei lavori" style="width:100%;height:100%;object-fit:cover">
+      <figure>
+        <img src="images/p15.jpg" alt="Salotto con arredi datati e pavimento in resina blu, prima dei lavori">
       </figure>
-      <figure class="grayscale" style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p16.jpg" alt="Bagno originale con piastrelle blu e vasca datata" style="width:100%;height:100%;object-fit:cover">
+      <figure>
+        <img src="images/p16.jpg" alt="Bagno originale con piastrelle blu e vasca datata">
       </figure>
-      <figure class="grayscale" style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p17.jpg" alt="Corridoio con tappeto e arredi originali della villa" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-    </div>
-  </section>
-
-  <section style="padding:clamp(40px,5vw,72px) 0 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:flex;align-items:baseline;gap:16px;margin-bottom:clamp(20px,3vw,32px)">
-      <h2 style="font-size:clamp(24px,2.8vw,32px);letter-spacing:-0.02em;margin:0">Dopo</h2>
-      <span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Luminoso e contemporaneo</span>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--color-bg)">
-      <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p18.jpg" alt="Dettaglio della colonna rivestita in piastrelle gialle" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p19.jpg" alt="Cucina essenziale con mensolone a vista e travi restaurate" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p20.jpg" alt="Zona pranzo con vista sulla nuova scala" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p21.jpg" alt="Bagno con rivestimenti blu e arancio" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p22.jpg" alt="Bagno con doppio specchio e piastrelle colorate" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/p23.jpg" alt="Soggiorno con soppalco dopo la ristrutturazione" style="width:100%;height:100%;object-fit:cover">
+      <figure>
+        <img src="images/p17.jpg" alt="Corridoio con tappeto e arredi originali della villa">
       </figure>
     </div>
   </section>
 
-  <section style="border-top:2px solid var(--color-divider);padding:clamp(36px,5vw,64px) 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center">
-      <a href="caso-appartamento-in-centro.html" style="font-family:var(--font-heading);font-weight:800;font-size:clamp(20px,2.4vw,28px);letter-spacing:-0.02em;color:var(--color-text)">Caso successivo: Appartamento in centro →</a>
-      <a class="btn btn-primary" href="index.html#contatti" style="font-size:14px;padding:12px 20px">Richiedi una prima chiamata</a>
+  <section class="case-photos">
+    <div class="case-photos__head">
+      <h2>Dopo</h2>
+      <span class="case-photos__tag case-photos__tag--accent">Luminoso e contemporaneo</span>
+    </div>
+    <div class="photo-grid">
+      <figure>
+        <img src="images/p18.jpg" alt="Dettaglio della colonna rivestita in piastrelle gialle">
+      </figure>
+      <figure>
+        <img src="images/p19.jpg" alt="Cucina essenziale con mensolone a vista e travi restaurate">
+      </figure>
+      <figure>
+        <img src="images/p20.jpg" alt="Zona pranzo con vista sulla nuova scala">
+      </figure>
+      <figure>
+        <img src="images/p21.jpg" alt="Bagno con rivestimenti blu e arancio">
+      </figure>
+      <figure>
+        <img src="images/p22.jpg" alt="Bagno con doppio specchio e piastrelle colorate">
+      </figure>
+      <figure>
+        <img src="images/p23.jpg" alt="Soggiorno con soppalco dopo la ristrutturazione">
+      </figure>
     </div>
   </section>
 
-</div>
+  <section class="case-footer-nav">
+    <div class="case-footer-nav__inner">
+      <a href="caso-appartamento-in-centro.html" class="case-footer-nav__link">Caso successivo: Appartamento in centro →</a>
+      <a class="btn btn-primary" href="index.html#contatti">Contattaci</a>
+    </div>
+  </section>
+
 </body>
 </html>

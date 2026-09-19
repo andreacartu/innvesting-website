@@ -3,320 +3,302 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>INNvesting, sourcing, arredo e valorizzazione di immobili di pregio</title>
+<title>INNvesting, sourcing, arredo e valorizzazione di immobili ad alto potenziale</title>
 <link rel="stylesheet" href="css/styles.css">
-<style>
-  body { margin: 0; background: var(--color-bg); color: var(--color-text); }
-  a { color: var(--color-accent-700); text-decoration: none; }
-  a:hover { color: var(--color-accent); }
-  ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
-</style>
-<style>
-  .case-link:hover { background: var(--color-accent-100) !important; }
-</style>
 </head>
 <body>
-<div style="font-family:var(--font-body);background:var(--color-bg);color:var(--color-text);overflow-x:hidden">
 
-  <header style="position:sticky;top:0;z-index:30;background:var(--color-bg);border-bottom:2px solid var(--color-divider)">
-    <div style="max-width:1240px;margin:0 auto;padding:14px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:24px">
-      <a href="#top" style="display:block;line-height:0" aria-label="INNvesting"><img src="images/logo-innvesting.png" alt="INNvesting" style="display:block;height:26px;width:auto"></a>
-      <nav style="display:flex;flex-wrap:wrap;gap:clamp(12px,2vw,26px);align-items:center">
-        <a href="#chi-sono" style="font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--color-text)">Chi sono</a>
-        <a href="#processo" style="font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--color-text)">Come lavoro</a>
-        <a href="#arredo" style="font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--color-text)">Come arredo</a>
-        <a href="#casi-reali" style="font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--color-text)">Casi reali</a>
-        <a href="#esempi" style="font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--color-text)">Esempi</a>
-        <a href="#vantaggi" style="font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--color-text)">Vantaggi</a>
-        <a class="btn btn-primary" href="#contatti" style="font-size:13px">Contatti</a>
+  <header class="site-header">
+    <div class="site-header__bar">
+      <a href="#top" class="brand" aria-label="INNvesting"><img src="images/logo-innvesting.png" alt="INNvesting"></a>
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Apri il menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="main-nav" id="main-nav">
+        <a href="#come-funziona">Come funziona</a>
+        <a href="#chi-sono">Chi sono</a>
+        <a href="#come-lavoriamo">Come lavoriamo</a>
+        <a href="#realizzazioni">Realizzazioni</a>
+        <a href="#esempi">Esempi</a>
+        <a href="#vantaggi">Vantaggi</a>
+        <a class="btn btn-primary" href="#contatti">Contatti</a>
       </nav>
     </div>
   </header>
 
-  <section id="top" style="position:relative;min-height:min(86vh,760px);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(120px,18vh,220px) 0 clamp(28px,4vw,44px);background-color:var(--color-text);background-image:linear-gradient(90deg,rgba(24,22,21,.88) 0%,rgba(24,22,21,.62) 48%,rgba(24,22,21,.25) 100%),url(images/a6-soggiorno-vetrata.jpg);background-size:cover;background-position:center 58%">
-    <div style="max-width:1240px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
-      <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--color-bg);opacity:.85;margin-bottom:clamp(18px,3vw,28px)">Real Estate Opportunities</div>
-      <h1 style="font-size:clamp(46px,8vw,104px);line-height:0.94;letter-spacing:-0.04em;margin:0 0 clamp(22px,3vw,32px);color:var(--color-bg);max-width:18ch">You invest.<br>We create value<span style="color:var(--color-accent)">.</span></h1>
-      <p style="font-size:clamp(16px,1.6vw,19px);line-height:1.55;margin:0 0 clamp(26px,3.5vw,38px);max-width:52ch;color:var(--color-bg)">Seleziono immobili di pregio, li ristrutturo e li arredo al miglior prezzo disponibile, pronti per una rivendita di qualità, senza che l'investitore debba seguire nulla in prima persona.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
-        <a class="btn btn-primary" href="#contatti" style="font-size:14px;padding:14px 22px">Richiedi una prima chiamata</a>
-        <a href="#processo" style="font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-bg);border-bottom:2px solid var(--color-accent);padding-bottom:4px">Come funziona</a>
+  <section id="top" class="hero">
+    <div class="container">
+      <img class="hero__logo" src="images/logo-innvesting-white.png" alt="INNvesting">
+      <div class="hero__eyebrow">Real Estate Opportunities</div>
+      <h1 class="hero__title">You invest.<br>We create value.</h1>
+      <p class="hero__lede">Investire in un immobile ad alto potenziale può finalmente essere semplice. Troviamo l'occasione giusta, coordiniamo ristrutturazione e arredo, seguiamo il cantiere passo dopo passo e gestiamo la rivendita finale. Tu decidi, ci pensiamo noi.</p>
+      <div class="hero__actions">
+        <a class="btn btn-primary" href="#contatti">Contattaci</a>
       </div>
     </div>
-    <div style="max-width:1240px;width:100%;margin:0 auto;padding:clamp(36px,6vw,72px) clamp(20px,4vw,48px) 0;display:flex;justify-content:flex-end">
-      <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;line-height:1.7;color:var(--color-bg);opacity:.85;text-align:left">A different<br>way to invest.</div>
-    </div>
-  </section>
-
-  <section style="background:var(--color-text);color:var(--color-bg);padding:clamp(28px,4vw,44px) 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:clamp(20px,3vw,32px)">
-      <div style="border-left:2px solid var(--color-accent);padding-left:18px">
-        <div style="font-family:var(--font-heading);font-weight:800;font-size:clamp(34px,4vw,52px);line-height:1;letter-spacing:-0.04em;color:var(--color-bg)">12</div>
-        <div style="font-size:13px;line-height:1.5;margin-top:10px;max-width:26ch;color:var(--color-bg);opacity:.85">anni alla guida di un'azienda tech, dalla fondazione alla scalabilità</div>
-      </div>
-      <div style="border-left:2px solid var(--color-accent);padding-left:18px">
-        <div style="font-family:var(--font-heading);font-weight:800;font-size:clamp(34px,4vw,52px);line-height:1;letter-spacing:-0.04em;color:var(--color-bg)">20M+</div>
-        <div style="font-size:13px;line-height:1.5;margin-top:10px;max-width:26ch;color:var(--color-bg);opacity:.85">euro di transato annuo gestiti nella precedente attività</div>
-      </div>
-      <div style="border-left:2px solid var(--color-accent);padding-left:18px">
-        <div style="font-family:var(--font-heading);font-weight:800;font-size:clamp(34px,4vw,52px);line-height:1;letter-spacing:-0.04em;color:var(--color-bg)">3</div>
-        <div style="font-size:13px;line-height:1.5;margin-top:10px;max-width:26ch;color:var(--color-bg);opacity:.85">operazioni raccontate per intero, dal cantiere alla rivendita</div>
-      </div>
+    <div class="container hero__tagline-row">
+      <div class="hero__tagline">A different<br>way to invest.</div>
     </div>
   </section>
 
-  <section id="chi-sono" style="border-top:2px solid var(--color-divider);padding:clamp(48px,6vw,88px) 0;background:var(--color-surface)">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,4vw,64px)">
+  <section id="come-funziona" class="section section--accent-soft">
+    <div class="container">
+      <div class="section-head section-head--lg">
+        <div>
+          <div class="eyebrow">Come funziona</div>
+          <h2>Sei fasi, un solo referente dall'inizio alla fine</h2>
+        </div>
+        <p>Ogni operazione segue lo stesso percorso, pensato per ridurre al minimo il tempo e le decisioni che restano da prendere a te.</p>
+      </div>
+
+      <div class="step">
+        <div class="step__number">01</div>
+        <div>
+          <h3>Ricerca riservata</h3>
+          <p>Individuiamo immobili ad alto potenziale di rivalutazione grazie a una rete di agenzie selezionate, che ci segnalano le occasioni migliori prima ancora di metterle sul mercato aperto. Non dev'essere per forza una villa: anche un appartamento comune può valere il triplo una volta ristrutturato, se la posizione è quella giusta.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__number">02</div>
+        <div>
+          <h3>Squadra e preventivo blindato, prima dell'acquisto</h3>
+          <p>Prima ancora di acquistare, individuiamo il geometra o l'architetto più adatto al tipo di intervento e mettiamo insieme la squadra di cantiere, che fornisce i preventivi di ristrutturazione comprensivi di ogni costo. Così sai esattamente quanto costerà l'intera operazione prima di impegnare il capitale.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__number">03</div>
+        <div>
+          <h3>Acquisto in piena proprietà, a tuo nome</h3>
+          <p>Scelto l'immobile e definito il budget lavori, fai il rogito direttamente a tuo nome: la proprietà è sempre e solo tua, non compriamo né rivendiamo in prima persona. Da qui in poi ci occupiamo di tutta la parte operativa che di solito frena chi vorrebbe investire nel mattone.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__number">04</div>
+        <div>
+          <h3>Finiture e arredi con acquisto diretto, per il prezzo più conveniente</h3>
+          <p>Selezioniamo personalmente infissi, pavimenti, piastrelle, elettrodomestici, cucine e complementi d'arredo, con la stessa tecnologia e gli stessi brand che vorremmo nella nostra casa: solo marchi di qualità, dal forte contenuto tecnologico. Cerchiamo però il prezzo più conveniente in quel momento, acquistando direttamente dal fornitore o online, a caccia delle promozioni migliori.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__number">05</div>
+        <div>
+          <h3>Cantiere seguito passo passo</h3>
+          <p>Coordiniamo geometri, imprese e fornitori, con sopralluoghi regolari e un rendiconto costante: resti informato in ogni momento, senza dover essere presente in cantiere.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__number">06</div>
+        <div>
+          <h3>Vendita e rendicontazione</h3>
+          <p>Tramite la stessa rete di agenzie, rimettiamo l'immobile sul mercato e definiamo insieme a te il prezzo di vendita per ottenere il margine migliore: a vendere sei sempre tu, come per l'acquisto. Chiudiamo l'operazione con un rendiconto chiaro di costi, tempi e risultato ottenuto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chi-sono" class="section section--tinted about">
+    <div class="container about__grid">
       <div>
-        <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:16px">Chi sono</div>
-        <h2 style="font-size:clamp(28px,3.6vw,44px);line-height:1.08;letter-spacing:-0.025em;margin:0 0 clamp(28px,4vw,40px)">Dodici anni a costruire un'azienda, oggi la stessa attenzione applicata al mattone.</h2>
-         </div>
-      <div style="display:flex;flex-direction:column;gap:18px">
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:62ch">Sono un imprenditore con base a Treviso. Per dodici anni ho fondato e guidato un'azienda tecnologica, portandola a operare in decine di città italiane e a generare oltre venti milioni di euro di transato annuo. Prima ancora ho lavorato nell'export e nella gestione commerciale nel settore dell'arredo e del design.</p>
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:62ch">Oggi metto la stessa disciplina operativa e la stessa capacità di seguire un progetto dall'inizio alla fine al servizio di chi vuole investire in immobili di pregio, senza dover costruire da zero un team dedicato o seguire personalmente cantieri e agenzie.</p>
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:62ch">Non gestisco un fondo e non raccolgo capitale in forma collettiva. Lavoro su singole operazioni, con un mandato chiaro per ogni immobile e piena trasparenza sui numeri, dal prezzo di acquisto fino alla rivendita finale.</p>
+        <div class="eyebrow">Chi sono</div>
+        <h2>Tredici anni a costruire un'azienda, oggi la stessa attenzione applicata al mattone.</h2>
+      </div>
+      <div class="about__copy">
+        <p>Sono un imprenditore con base a Treviso. Guido la mia azienda tecnologica da tredici anni, portandola a operare in decine di città italiane e a superare i 180 milioni di euro di transato complessivo. Prima ancora ho lavorato nell'export e nella gestione commerciale nel settore dell'arredo e del design.</p>
+        <p>Oggi metto la stessa disciplina operativa e la stessa capacità di seguire un progetto dall'inizio alla fine al servizio di chi vuole investire in immobili ad alto potenziale, senza dover costruire da zero un team dedicato o seguire personalmente cantieri e agenzie.</p>
+        <p>Non gestisco un fondo, non raccolgo capitale e non compro né rivendo immobili in prima persona: l'immobile che scegliamo insieme lo acquisti sempre tu, con rogito diretto a tuo nome. Io affianco l'intera operazione con un mandato chiaro, dalla ricerca alla rivendita finale, e vengo remunerato con una percentuale sulle diverse fasi del lavoro, mai dai fornitori o dai negozi con cui collaboro.</p>
       </div>
     </div>
   </section>
 
-  <section id="processo" style="border-top:2px solid var(--color-divider);padding:clamp(48px,6vw,88px) 0;background:var(--color-accent-200)">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,64px);align-items:end;margin-bottom:clamp(32px,4vw,56px)">
-        <div>
-          <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:16px">Come lavoro</div>
-          <h2 style="font-size:clamp(28px,3.6vw,44px);line-height:1.08;letter-spacing:-0.025em;margin:0">Cinque fasi, un solo referente dall'inizio alla fine</h2>
-        </div>
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:52ch">Ogni operazione segue lo stesso percorso, pensato per ridurre al minimo il tempo e le decisioni richieste all'investitore.</p>
-      </div>
-
-      <div style="display:grid;grid-template-columns:100px minmax(0,1fr);gap:clamp(16px,3vw,40px);border-top:2px solid var(--color-divider);padding:26px 0">
-        <div style="font-family:var(--font-heading);font-weight:800;font-size:28px;color:var(--color-accent)">01</div>
-        <div>
-          <h3 style="font-size:22px;margin:0 0 10px;letter-spacing:-0.015em">Ricerca riservata</h3>
-          <p style="font-size:16px;line-height:1.65;margin:0;max-width:70ch">Individuo immobili di pregio spesso prima che arrivino sul mercato aperto, grazie a una rete di agenzie selezionate che mi mostrano le occasioni migliori in anteprima.</p>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:100px minmax(0,1fr);gap:clamp(16px,3vw,40px);border-top:2px solid var(--color-divider);padding:26px 0">
-        <div style="font-family:var(--font-heading);font-weight:800;font-size:28px;color:var(--color-accent)">02</div>
-        <div>
-          <h3 style="font-size:22px;margin:0 0 10px;letter-spacing:-0.015em">Progetto e stima</h3>
-          <p style="font-size:16px;line-height:1.65;margin:0;max-width:70ch">Valuto il potenziale di valorizzazione dell'immobile, definisco il progetto di ristrutturazione con render dedicati e quantifico con precisione i costi previsti.</p>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:100px minmax(0,1fr);gap:clamp(16px,3vw,40px);border-top:2px solid var(--color-divider);padding:26px 0">
-        <div style="font-family:var(--font-heading);font-weight:800;font-size:28px;color:var(--color-accent)">03</div>
-        <div>
-          <h3 style="font-size:22px;margin:0 0 10px;letter-spacing:-0.015em">Acquisti al prezzo migliore, non a listino</h3>
-          <p style="font-size:16px;line-height:1.65;margin:0 0 20px;max-width:70ch">Faccio personalmente da acquirente per elettrodomestici, cucine e complementi di arredo, con la stessa tecnologia e gli stessi brand che si trovano in negozio, tra cui Veneta Cucine, ma al prezzo più conveniente disponibile online in quel momento, monitorando le offerte fino a trovare quella giusta.</p>
-          <div style="background:var(--color-accent-100);border-left:4px solid var(--color-accent);padding:20px 24px;max-width:70ch">
-            <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:10px">Esempio reale</div>
-            <div style="font-family:var(--font-heading);font-weight:800;font-size:17px;line-height:1.25;margin-bottom:8px">Forno doppia cottura Samsung NV7B45403BS</div>
-            <div style="font-size:15px;line-height:1.55"><s style="color:var(--color-neutral-700)">1.828,78 €</s> pagato 596,58 €, oltre 1.200 € risparmiati rispetto al prezzo di listino</div>
-          </div>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:100px minmax(0,1fr);gap:clamp(16px,3vw,40px);border-top:2px solid var(--color-divider);padding:26px 0">
-        <div style="font-family:var(--font-heading);font-weight:800;font-size:28px;color:var(--color-accent)">04</div>
-        <div>
-          <h3 style="font-size:22px;margin:0 0 10px;letter-spacing:-0.015em">Cantiere seguito passo passo</h3>
-          <p style="font-size:16px;line-height:1.65;margin:0;max-width:70ch">Coordino geometri, imprese e fornitori, con sopralluoghi regolari e un rendiconto costante, così l'investitore resta informato senza dover intervenire.</p>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:100px minmax(0,1fr);gap:clamp(16px,3vw,40px);border-top:2px solid var(--color-divider);border-bottom:2px solid var(--color-divider);padding:26px 0">
-        <div style="font-family:var(--font-heading);font-weight:800;font-size:28px;color:var(--color-accent)">05</div>
-        <div>
-          <h3 style="font-size:22px;margin:0 0 10px;letter-spacing:-0.015em">Vendita e rendicontazione</h3>
-          <p style="font-size:16px;line-height:1.65;margin:0;max-width:70ch">Gestisco la vendita dell'immobile ristrutturato e arredato, e chiudo l'operazione con un rendiconto chiaro di costi, tempi e risultato ottenuto.</p>
-        </div>
-      </div>
+  <section id="come-lavoriamo" class="section section-photo">
+    <div class="container">
+      <div class="eyebrow">Come lavoriamo</div>
+      <h2>Come nuovo, senza compromessi sulla qualità</h2>
+      <p>Ogni immobile viene analizzato a fondo e riportato allo stato di nuovo. Quando serve, rifacciamo impianti idraulici ed elettrici da zero, e i bagni li rifacciamo sempre per intero, con docce a filo pavimento, piastrelle di grande formato, rubinetteria e sanitari dall'estetica curata. Oltre alle finiture di base, come pavimenti in legno e infissi, inseriamo sempre una cucina di design con elettrodomestici di livello, tra cui AEG, Bosch e Samsung, e comandi Living Now predisposti per la domotica. Per ottenere un margine solido alla rivendita serve offrire la qualità e il comfort più alti possibili in una casa.</p>
     </div>
   </section>
 
-  <section id="arredo" style="border-top:2px solid var(--color-divider);padding:clamp(48px,6vw,88px) 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);margin-bottom:clamp(28px,4vw,48px)">
-      <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:16px">Come arredo</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,64px);align-items:end">
-        <h2 style="font-size:clamp(28px,3.6vw,44px);line-height:1.08;letter-spacing:-0.025em;margin:0">Da spazio vuoto a casa pronta, con arredi di design</h2>
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:52ch">Ogni immobile viene rifinito con cucine, bagni e complementi scelti personalmente, con lo stesso occhio che metterei nella mia casa. Qui sotto alcuni esempi dei progetti seguiti.</p>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--color-bg)">
-      <figure style="margin:0;aspect-ratio:3/2;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/a1-cucina-isola.jpg" alt="Cucina con isola e travi originali a vista" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:3/2;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/a2-cucina-rovere.jpg" alt="Cucina in rovere con isola e piano a sbalzo" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:3/2;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/a3-bagno-specchi.jpg" alt="Bagno con specchi retroilluminati e doccia rivestita" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:3/2;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/a4-soppalco.jpg" alt="Soggiorno con soppalco e travi a vista" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:3/2;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/a5-soggiorno-travi.jpg" alt="Soggiorno con travi originali e arredi su misura" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-      <figure style="margin:0;aspect-ratio:3/2;overflow:hidden;background:var(--color-surface);outline:1px solid var(--color-divider)">
-        <img src="images/a6-soggiorno-vetrata.jpg" alt="Soggiorno con vetrata scorrevole verso il giardino" style="width:100%;height:100%;object-fit:cover">
-      </figure>
-    </div>
-  </section>
-
-  <section id="casi-reali" style="border-top:2px solid var(--color-divider);padding:clamp(48px,6vw,88px) 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,64px);align-items:end;margin-bottom:clamp(28px,4vw,48px)">
+  <section id="realizzazioni" class="section">
+    <div class="container">
+      <div class="section-head">
         <div>
-          <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:16px">Casi reali</div>
-          <h2 style="font-size:clamp(28px,3.6vw,44px);line-height:1.08;letter-spacing:-0.025em;margin:0">Tre operazioni concluse, raccontate per intero</h2>
+          <div class="eyebrow">Realizzazioni</div>
+          <h2>Le realizzazioni, raccontate per intero</h2>
         </div>
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:52ch">Ogni progetto ha una sua storia, dal punto di partenza alle scelte fatte in corso d'opera. Apri una scheda per vedere il percorso completo, con le foto del prima e del dopo.</p>
+        <p>Ogni progetto ha una sua storia, dal punto di partenza alle scelte fatte in corso d'opera. Apri una scheda per vedere il percorso completo, con le foto del prima e del dopo.</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;background:var(--color-bg)">
-        <a href="caso-villa-in-citta.html" style="display:flex;flex-direction:column;background:var(--color-bg);padding:0;color:var(--color-text);outline:1px solid var(--color-divider)" class="case-link">
-          <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;outline:1px solid var(--color-divider)">
-            <img src="images/p01.jpg" alt="Villa in citta, dopo la ristrutturazione" style="width:100%;height:100%;object-fit:cover">
+      <div class="case-grid">
+        <a href="caso-villa-in-citta.html" class="case-card">
+          <figure>
+            <img src="images/p01.jpg" alt="Villa in città, dopo la ristrutturazione">
           </figure>
-          <div style="padding:24px">
-            <h3 style="font-size:24px;margin:0 0 10px;letter-spacing:-0.02em">Villa in citta</h3>
-            <p style="font-size:15px;line-height:1.6;margin:0 0 16px">Da cantiere grezzo a casa pronta: acquisto a 550.000 euro, rivendita a 920.000 euro.</p>
-            <span style="font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent)">Guarda il progetto →</span>
+          <div class="case-card__body">
+            <span class="case-card__number">N.01</span>
+            <h3>Villa in città</h3>
+            <p>Da cantiere grezzo a casa pronta, con un design contemporaneo e materiali naturali.</p>
+            <span class="case-card__cta">Guarda il progetto →</span>
           </div>
         </a>
-        <a href="caso-barchessa.html" style="display:flex;flex-direction:column;background:var(--color-bg);padding:0;color:var(--color-text);outline:1px solid var(--color-divider)" class="case-link">
-          <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;outline:1px solid var(--color-divider)">
-            <img src="images/p19.jpg" alt="Cucina essenziale con mensolone a vista e travi restaurate" style="width:100%;height:100%;object-fit:cover">
+        <a href="caso-barchessa.html" class="case-card">
+          <figure>
+            <img src="images/p19.jpg" alt="Cucina essenziale con mensolone a vista e travi restaurate">
           </figure>
-          <div style="padding:24px">
-            <h3 style="font-size:24px;margin:0 0 10px;letter-spacing:-0.02em">Barchessa di villa veneta</h3>
-            <p style="font-size:15px;line-height:1.6;margin:0 0 16px">Da appartamento anni ottanta a spazio luminoso e moderno, nel rispetto della villa storica.</p>
-            <span style="font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent)">Guarda il progetto →</span>
+          <div class="case-card__body">
+            <span class="case-card__number">N.02</span>
+            <h3>Barchessa di villa veneta</h3>
+            <p>Da appartamento anni ottanta a spazio luminoso e moderno, nel rispetto della villa storica.</p>
+            <span class="case-card__cta">Guarda il progetto →</span>
           </div>
         </a>
-        <a href="caso-appartamento-in-centro.html" style="display:flex;flex-direction:column;background:var(--color-bg);padding:0;color:var(--color-text);outline:1px solid var(--color-divider)" class="case-link">
-          <figure style="margin:0;aspect-ratio:4/3;overflow:hidden;outline:1px solid var(--color-divider)">
-            <img src="images/p31.jpg" alt="Render del soggiorno di progetto" style="width:100%;height:100%;object-fit:cover">
+        <a href="caso-appartamento-in-centro.html" class="case-card">
+          <figure>
+            <img src="images/p31.jpg" alt="Render del soggiorno di progetto">
           </figure>
-          <div style="padding:24px">
-            <h3 style="font-size:24px;margin:0 0 10px;letter-spacing:-0.02em">Appartamento in centro</h3>
-            <p style="font-size:15px;line-height:1.6;margin:0 0 16px">Cantiere in corso: appartamento in condominio con zona esterna privata, qui con foto del prima e render del progetto finale.</p>
-            <span style="font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent)">Guarda il progetto →</span>
+          <div class="case-card__body">
+            <span class="case-card__number">N.03</span>
+            <h3>Appartamento in centro</h3>
+            <p>Cantiere in corso: appartamento in condominio con zona esterna privata, qui con foto del prima e render del progetto finale.</p>
+            <span class="case-card__cta">Guarda il progetto →</span>
+          </div>
+        </a>
+        <a href="caso-villa-in-campagna.html" class="case-card">
+          <figure>
+            <img src="images/p44.jpg" alt="Soggiorno e sala da pranzo con parquet in rovere dopo la ristrutturazione">
+          </figure>
+          <div class="case-card__body">
+            <span class="case-card__number">N.04</span>
+            <h3>Villa singola in campagna</h3>
+            <p>Da villa dallo stile datato a un unico ambiente luminoso, con parquet in rovere e cucina a vista sul giardino.</p>
+            <span class="case-card__cta">Guarda il progetto →</span>
           </div>
         </a>
       </div>
     </div>
   </section>
 
-  <section id="esempi" style="border-top:2px solid var(--color-divider);padding:clamp(48px,6vw,88px) 0;background:var(--color-accent-100)">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,64px);align-items:end;margin-bottom:clamp(28px,4vw,48px)">
+  <section id="esempi" class="section section--accent-light">
+    <div class="container">
+      <div class="section-head">
         <div>
-          <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:16px">Esempi</div>
-          <h2 style="font-size:clamp(28px,3.6vw,44px);line-height:1.08;letter-spacing:-0.025em;margin:0">Due operazioni tipo, con i numeri reali</h2>
+          <div class="eyebrow">Esempi</div>
+          <h2>Due operazioni, con i numeri reali</h2>
         </div>
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:52ch">Ogni immobile fa storia a sé, ma questi due esempi danno un'idea concreta dell'ordine di grandezza dei margini possibili su un'operazione di pregio ben condotta.</p>
+        <p>Si parte dal capitale investito e si arriva a quello che resta all'investitore, dopo ogni costo dell'operazione. Importi IVA esclusa, pensati anche per chi investe tramite società.</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2px;background:var(--color-bg)">
-        <div style="background:var(--color-bg);padding:clamp(24px,3vw,36px);outline:1px solid var(--color-divider)">
-          <h3 style="font-size:24px;margin:0 0 8px;letter-spacing:-0.02em">Barchessa di villa veneta</h3>
-          <p style="font-size:14px;line-height:1.55;margin:0 0 24px;color:var(--color-neutral-800)">Campagna trevigiana, recupero con mantenimento degli elementi architettonici originali</p>
-          <div style="display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--color-divider);padding:12px 0;font-size:15px"><span>Prezzo di acquisto</span><span style="font-family:var(--font-heading);font-weight:800">325.000 €</span></div>
-          <div style="display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--color-divider);padding:12px 0;font-size:15px"><span>Lavori di ristrutturazione</span><span style="font-family:var(--font-heading);font-weight:800">100.000 €</span></div>
-          <div style="display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--color-divider);padding:12px 0;font-size:15px"><span>Prezzo di rivendita stimato</span><span style="font-family:var(--font-heading);font-weight:800">750.000 €</span></div>
-          <div style="display:flex;justify-content:space-between;gap:16px;border-top:2px solid var(--color-text);padding:12px 0;font-size:15px"><span>Margine lordo stimato</span><span style="font-family:var(--font-heading);font-weight:800;color:var(--color-accent-700)">circa 270.000 €</span></div>
-          <div style="display:flex;align-items:baseline;gap:16px;margin-top:24px;background:var(--color-surface);padding:20px 24px">
-            <span style="font-family:var(--font-heading);font-weight:800;font-size:48px;line-height:1;letter-spacing:-0.04em;color:var(--color-accent)">61%</span>
-            <span style="font-size:13px;line-height:1.45;max-width:24ch">rendimento lordo stimato sul capitale investito</span>
+      <div class="examples-grid">
+        <div class="example-card">
+          <h3>Barchessa di villa veneta</h3>
+          <p>Campagna trevigiana, recupero con mantenimento degli elementi architettonici originali</p>
+          <div class="example-row"><span>Prezzo di acquisto</span><span>325.000 €</span></div>
+          <div class="example-row"><span>Agenzia e notaio all'acquisto</span><span>11.625 €</span></div>
+          <div class="example-row"><span>Lavori di ristrutturazione e gestione</span><span>170.073 €</span></div>
+          <div class="example-row example-row--subtotal"><span>Capitale investito</span><span>506.698 €</span></div>
+          <div class="example-row"><span>Prezzo di rivendita</span><span>770.000 €</span></div>
+          <div class="example-row"><span>Agenzia alla vendita</span><span>19.250 €</span></div>
+          <div class="example-row example-row--total"><span>Margine netto investitore</span><span>244.052 €</span></div>
+          <div class="example-yield">
+            <span class="example-yield__value">48,2%</span>
+            <span class="example-yield__label">margine netto sul capitale investito</span>
           </div>
         </div>
-        <div style="background:var(--color-bg);padding:clamp(24px,3vw,36px);outline:1px solid var(--color-divider)">
-          <h3 style="font-size:24px;margin:0 0 8px;letter-spacing:-0.02em">Appartamento con giardino, centro storico</h3>
-          <p style="font-size:14px;line-height:1.55;margin:0 0 24px;color:var(--color-neutral-800)">Ristrutturazione completa degli interni, giardino privato di pertinenza</p>
-          <div style="display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--color-divider);padding:12px 0;font-size:15px"><span>Prezzo di acquisto</span><span style="font-family:var(--font-heading);font-weight:800">250.000 €</span></div>
-          <div style="display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--color-divider);padding:12px 0;font-size:15px"><span>Lavori di ristrutturazione</span><span style="font-family:var(--font-heading);font-weight:800">95.000 €</span></div>
-          <div style="display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--color-divider);padding:12px 0;font-size:15px"><span>Prezzo di rivendita stimato</span><span style="font-family:var(--font-heading);font-weight:800">650.000 €</span></div>
-          <div style="display:flex;justify-content:space-between;gap:16px;border-top:2px solid var(--color-text);padding:12px 0;font-size:15px"><span>Margine lordo stimato</span><span style="font-family:var(--font-heading);font-weight:800;color:var(--color-accent-700)">circa 257.000 €</span></div>
-          <div style="display:flex;align-items:baseline;gap:16px;margin-top:24px;background:var(--color-surface);padding:20px 24px">
-            <span style="font-family:var(--font-heading);font-weight:800;font-size:48px;line-height:1;letter-spacing:-0.04em;color:var(--color-accent)">71%</span>
-            <span style="font-size:13px;line-height:1.45;max-width:24ch">rendimento lordo stimato sul capitale investito</span>
+        <div class="example-card">
+          <h3>Appartamento con giardino, centro storico</h3>
+          <p>Ristrutturazione completa degli interni, giardino privato di pertinenza</p>
+          <div class="example-row"><span>Prezzo di acquisto</span><span>250.000 €</span></div>
+          <div class="example-row"><span>Imposta di registro</span><span>25.000 €</span></div>
+          <div class="example-row"><span>Agenzia e notaio all'acquisto</span><span>9.750 €</span></div>
+          <div class="example-row"><span>Lavori di ristrutturazione e gestione</span><span>146.345 €</span></div>
+          <div class="example-row example-row--subtotal"><span>Capitale investito</span><span>431.095 €</span></div>
+          <div class="example-row"><span>Prezzo di rivendita</span><span>640.000 €</span></div>
+          <div class="example-row"><span>Agenzia alla vendita</span><span>16.000 €</span></div>
+          <div class="example-row example-row--total"><span>Margine netto investitore</span><span>192.905 €</span></div>
+          <div class="example-yield">
+            <span class="example-yield__value">44,7%</span>
+            <span class="example-yield__label">margine netto sul capitale investito</span>
           </div>
         </div>
       </div>
-      <p style="font-size:13px;line-height:1.6;margin:20px 0 0;max-width:80ch;color:var(--color-neutral-800)">Valori indicativi calcolati sul solo capitale impiegato in acquisto e lavori, al lordo di imposte, oneri accessori e della mia remunerazione. Esempi a scopo illustrativo, non costituiscono una promessa di rendimento.</p>
+      <p class="examples__disclaimer">Tutti gli importi sono IVA esclusa e le commissioni di agenzia sono calcolate al 2,5%. La voce lavori comprende anche la gestione dell'operazione. Il margine netto è calcolato prima delle imposte sul risultato. Esempi a scopo illustrativo, non costituiscono una promessa di rendimento.</p>
     </div>
   </section>
 
-  <section id="vantaggi" style="border-top:2px solid var(--color-divider);padding:clamp(48px,6vw,88px) 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,64px);align-items:end;margin-bottom:clamp(28px,4vw,48px)">
+  <section id="vantaggi" class="section">
+    <div class="container">
+      <div class="section-head">
         <div>
-          <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:16px">Vantaggi</div>
-          <h2 style="font-size:clamp(28px,3.6vw,44px);line-height:1.08;letter-spacing:-0.025em;margin:0">Un asset reale, non solo una riga in un estratto conto</h2>
+          <div class="eyebrow">Vantaggi</div>
+          <h2>Un asset reale, non solo una riga in un estratto conto</h2>
         </div>
-        <p style="font-size:16px;line-height:1.65;margin:0;max-width:52ch">Per chi ha già un portafoglio prevalentemente finanziario, un immobile di pregio ben scelto e ben gestito aggiunge un tipo di rendimento diverso, legato a un bene concreto.</p>
+        <p>Per chi ha già un portafoglio prevalentemente finanziario, un immobile ad alto potenziale, ben scelto e ben gestito, aggiunge un tipo di rendimento diverso, legato a un bene concreto.</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--color-bg)">
-        <div style="background:var(--color-bg);padding:clamp(24px,3vw,36px);outline:1px solid var(--color-divider)">
-          <h3 style="font-size:20px;margin:0 0 20px;letter-spacing:-0.015em;color:var(--color-neutral-700)">Un portafoglio solo finanziario</h3>
-          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px">
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px;color:var(--color-neutral-800)">Rendimento legato all'andamento generale dei mercati</li>
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px;color:var(--color-neutral-800)">Nessun controllo diretto sul singolo asset</li>
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px;color:var(--color-neutral-800)">Valore percepito, ma non un bene fisico da mostrare o abitare</li>
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px;color:var(--color-neutral-800)">Diversificazione limitata a strumenti finanziari</li>
+      <div class="advantages-grid">
+        <div class="advantage-col">
+          <h3>Un portafoglio solo finanziario</h3>
+          <ul class="advantage-list">
+            <li>Rendimento legato all'andamento generale dei mercati</li>
+            <li>Nessun controllo diretto sul singolo asset</li>
+            <li>Valore percepito, ma non un bene fisico da mostrare o abitare</li>
+            <li>Diversificazione limitata a strumenti finanziari</li>
           </ul>
         </div>
-        <div style="background:var(--color-accent-100);padding:clamp(24px,3vw,36px);border-top:4px solid var(--color-accent);outline:1px solid var(--color-divider)">
-          <h3 style="font-size:20px;margin:0 0 20px;letter-spacing:-0.015em">Un immobile di pregio seguito da me</h3>
-          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px">
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px">Asset reale e tangibile, con un valore di mercato verificabile</li>
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px">Opportunità riservate, spesso non ancora pubblicate</li>
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px">Arredi ed elettrodomestici di alta gamma acquistati al prezzo migliore, non a listino</li>
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px">Gestione completa dell'operazione, dal sopralluogo alla rivendita</li>
-            <li style="font-size:15px;line-height:1.55;border-top:1px solid var(--color-divider);padding-top:14px">Rendicontazione puntuale su ogni fase e ogni costo</li>
+        <div class="advantage-col advantage-col--highlight">
+          <h3>Un immobile ad alto potenziale, seguito da me</h3>
+          <ul class="advantage-list">
+            <li>Asset reale e tangibile, con un valore di mercato verificabile</li>
+            <li>Opportunità riservate, spesso non ancora pubblicate</li>
+            <li>Arredi ed elettrodomestici di alta gamma acquistati al prezzo migliore, non a listino</li>
+            <li>Compenso legato al risultato dell'operazione, mai a provvigioni di fornitori o negozianti</li>
+            <li>Proprietà dell'immobile sempre a tuo nome, dal rogito alla rivendita</li>
+            <li>Gestione completa dell'operazione, dal sopralluogo alla rivendita</li>
+            <li>Rendicontazione puntuale su ogni fase e ogni costo</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section style="border-top:2px solid var(--color-divider);padding:clamp(48px,6vw,88px) 0;background:var(--color-text);color:var(--color-bg)">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
-      <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-400);margin-bottom:16px">A chi mi rivolgo</div>
-      <h2 style="font-size:clamp(28px,3.6vw,44px);line-height:1.08;letter-spacing:-0.025em;margin:0 0 clamp(28px,4vw,48px);max-width:30ch;color:var(--color-bg)">Un servizio pensato per chi già gestisce capitale</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;background:var(--color-bg)">
-        <div style="background:var(--color-bg);color:var(--color-text);padding:clamp(20px,3vw,32px);outline:1px solid var(--color-divider)">
-          <h3 style="font-size:19px;margin:0 0 12px;letter-spacing:-0.015em">Investitori privati</h3>
-          <p style="font-size:15px;line-height:1.6;margin:0">Persone che vogliono destinare una parte del proprio capitale al mattone di qualità, senza occuparsi personalmente di ricerca, cantiere o vendita.</p>
+  <section class="section section--dark audience">
+    <div class="container">
+      <div class="eyebrow">A chi mi rivolgo</div>
+      <h2>Un servizio pensato per chi già gestisce capitale</h2>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <h3>Investitori privati</h3>
+          <p>Persone che vogliono destinare una parte del proprio capitale al mattone di qualità, senza occuparsi personalmente di ricerca, cantiere o vendita.</p>
         </div>
-        <div style="background:var(--color-bg);color:var(--color-text);padding:clamp(20px,3vw,32px);outline:1px solid var(--color-divider)">
-          <h3 style="font-size:19px;margin:0 0 12px;letter-spacing:-0.015em">Family office</h3>
-          <p style="font-size:15px;line-height:1.6;margin:0">Strutture che gestiscono patrimoni familiari e cercano un partner operativo affidabile per la componente immobiliare.</p>
+        <div class="audience-card">
+          <h3>Family office</h3>
+          <p>Strutture che gestiscono patrimoni familiari e cercano un partner operativo affidabile per la componente immobiliare.</p>
         </div>
-        <div style="background:var(--color-bg);color:var(--color-text);padding:clamp(20px,3vw,32px);outline:1px solid var(--color-divider)">
-          <h3 style="font-size:19px;margin:0 0 12px;letter-spacing:-0.015em">Società di gestione patrimoniale</h3>
-          <p style="font-size:15px;line-height:1.6;margin:0">Realtà che vogliono offrire ai propri clienti anche l'accesso a operazioni immobiliari, oltre ai tradizionali strumenti finanziari.</p>
+        <div class="audience-card">
+          <h3>Società di gestione patrimoniale</h3>
+          <p>Realtà che vogliono offrire ai propri clienti anche l'accesso a operazioni immobiliari, oltre ai tradizionali strumenti finanziari.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="contatti" style="background:var(--color-accent);color:var(--color-bg);padding:clamp(48px,7vw,96px) 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,4vw,64px);align-items:start">
-      <div>
-        <h2 style="font-size:clamp(44px,8vw,104px);line-height:0.95;letter-spacing:-0.04em;margin:0 0 20px;color:var(--color-bg)">Parliamone</h2>
-        <p style="font-size:17px;line-height:1.6;margin:0;max-width:48ch;color:var(--color-bg)">Raccontami il capitale che vorresti destinare al mattone e il tipo di operazione che stai valutando. Rispondo personalmente a ogni richiesta.</p>
+  <section id="contatti" class="section--accent">
+    <div class="container contact__grid">
+      <div class="contact__intro">
+        <h2>Parliamone</h2>
+        <p>Raccontami il capitale che vorresti destinare al mattone e il tipo di operazione che stai valutando. Rispondo personalmente a ogni richiesta.</p>
       </div>
       <div>
-        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;border-top:2px solid var(--color-bg);padding:16px 0"><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase">Email</span><a href="mailto:info@innvesting.it" style="font-family:var(--font-heading);font-weight:800;font-size:17px;color:var(--color-bg)">info@innvesting.it</a></div>
-        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;border-top:2px solid var(--color-bg);padding:16px 0"><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase">Zona operativa</span><span style="font-family:var(--font-heading);font-weight:800;font-size:17px">Treviso e Veneto</span></div>
-        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;border-top:2px solid var(--color-bg);border-bottom:2px solid var(--color-bg);padding:16px 0"><span style="font-size:13px;letter-spacing:.1em;text-transform:uppercase">Risposta</span><span style="font-family:var(--font-heading);font-weight:800;font-size:17px">Entro 48 ore lavorative</span></div>
+        <div class="contact-row"><span class="contact-row__label">Email</span><a class="contact-row__value" href="mailto:info@innvesting.it">info@innvesting.it</a></div>
+        <div class="contact-row"><span class="contact-row__label">Telefono</span><a class="contact-row__value" href="tel:+393461892022">+39 346 1892022</a></div>
+        <div class="contact-row"><span class="contact-row__label">Zona operativa</span><span class="contact-row__value">Treviso e Veneto</span></div>
+        <div class="contact-row contact-row--last"><span class="contact-row__label">Risposta</span><span class="contact-row__value">Entro 48 ore lavorative</span></div>
       </div>
     </div>
   </section>
 
-  <footer style="padding:32px 0">
-    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);font-size:13px;line-height:1.6;color:var(--color-neutral-800);max-width:1240px">INNvesting, di Andrea. Sourcing, arredo e valorizzazione di immobili di pregio. Contenuti a scopo informativo, non costituiscono consulenza finanziaria.</div>
+  <footer class="site-footer">
+    <div class="container">INNvesting, di Andrea. Sourcing, arredo e valorizzazione di immobili ad alto potenziale. Contenuti a scopo informativo, non costituiscono consulenza finanziaria.</div>
   </footer>
 
-</div>
+  <script src="js/main.js"></script>
 </body>
 </html>
