@@ -348,8 +348,8 @@ body > section > .container, body > footer > .container { position: relative; z-
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .hero__actions .btn { padding: 14px 22px; }
 .hero__tagline-row { padding-top: clamp(36px, 6vw, 72px); display: flex; justify-content: flex-end; }
-.hero__tagline { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; line-height: 1.7; color: var(--color-bg); opacity: .85; text-align: left; }
-.hero__tagline-n { color: var(--color-accent-500); font-weight: 800; }
+.hero__tagline { font-family: var(--font-heading); font-weight: 800; font-size: clamp(15px, 1.8vw, 22px); letter-spacing: .08em; text-transform: uppercase; line-height: 1.35; color: var(--color-bg); text-align: left; }
+.hero__tagline img { display: inline-block; height: .95em; width: auto; margin: 0 .12em; vertical-align: baseline; }
 
 /* — about (chi sono) — */
 .about__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(28px, 4vw, 64px); }
