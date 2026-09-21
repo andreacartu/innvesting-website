@@ -6,7 +6,8 @@ import { CATEGORIE_COSTO, labelOf } from '../labels.js';
 import { registerActions, toast } from '../actions.js';
 import { rootBar } from '../components.js';
 import { biometric, lockNow, startChangePin } from '../lock.js';
-import { exportBackupJson, isEmpty, loadDemo, markBackup, mergeImport, replaceAll, resetAll, state } from '../store.js';
+import { applyExcelImport, exportBackupJson, isEmpty, loadDemo, markBackup, mergeImport, replaceAll, resetAll, state } from '../store.js';
+import { readCostFile } from '../excel-import.js';
 import { cloud, sendCode, signOut, syncNow, verifyCode } from '../cloud.js';
 import { forgetSyncState, sync, syncData } from '../sync.js';
 import { isConfigured } from '../supabase-client.js';
@@ -100,13 +101,39 @@ function cloudSection() {
       const notAdmin = cloud.state === 'not-admin';
       return html`
         <p class="muted">Collegato come <strong>${cloud.email}</strong>. ${notAdmin ? 'Questo account non è abilitato: vedi le istruzioni in supabase/LEGGIMI.md.' : syncLine()}</p>
-        ${!notAdmin && html`<p class="footnote">I dati sono salvati online e si aggiornano da soli su tutti i dispositivi in cui accedi con questa email. Una copia resta sul telefono, così l’app si apre subito e funziona anche senza rete.</p>`}
+        ${!notAdmin && html`<p class="footnote">I dati stanno sul database online e si aggiornano da soli su tutti i dispositivi in cui accedi con questa email. Sul telefono resta solo una copia temporanea, per aprire l’app in fretta e lavorare anche senza rete: uscendo dall’account viene cancellata.</p>`}
         ${!notAdmin && html`<p class="footnote">Per far vedere un immobile a un investitore aprilo, tocca Modifica e attiva “Condividi i lavori in tempo reale”, indicando la sua email.</p>`}
         <div class="stack section">
           ${!notAdmin && html`<button type="button" class="btn btn--outline btn--block" data-action="cloud-sync">Aggiorna ora</button>`}
           <button type="button" class="btn btn--outline btn--block" data-action="cloud-sign-out">Esci dall’account</button>
         </div>`;
     }
+  }
+}
+
+/* Chiede a quale immobile appartiene il foglio e lo importa. Se l'immobile ha già voci di un import precedente, le aggiorna. */
+async function importExcel(plan) {
+  const { properties, costs } = state();
+  const suggested = properties.find(p => costs.some(c => c.propertyId === p.id && c.origine === 'excel'))?.id ?? '';
+
+  const summary = await openForm({
+    title: 'Aggiorna da Excel',
+    values: { propertyId: suggested, nome: '' },
+    fields: [
+      { type: 'note', text: `Nel foglio “${plan.sheetName}” ci sono ${plan.costs.length} spese confermate${plan.excluded.length ? `, più ${plan.excluded.length} non confermate che vengono ignorate` : ''}.` },
+      { name: 'propertyId', label: 'Immobile da aggiornare', type: 'select', options: properties.map(p => ({ value: p.id, label: `${propertyCode(p)} · ${p.nome}` })), placeholder: 'Nuovo immobile' },
+      { name: 'nome', label: 'Nome del nuovo immobile', placeholder: 'Solo se scegli “Nuovo immobile”' },
+      { type: 'note', text: 'Importi, IVA, fornitori e pagato delle voci del foglio si aggiornano. Foto, dati dell’investitore, aggiornamenti di cantiere e le voci create nell’app restano.' },
+    ],
+    submitLabel: 'Importa',
+    onSubmit: values => {
+      if (!values.propertyId && !values.nome) throw new Error('Scrivi il nome del nuovo immobile.');
+      return applyExcelImport(plan, values);
+    },
+  });
+  if (summary?.added !== undefined) {
+    toast(`Aggiunte ${summary.added}, aggiornate ${summary.updated}, rimosse ${summary.removed} voci`);
+    location.hash = `#/immobili/${summary.propertyId}/costi`;
   }
 }
 
@@ -147,9 +174,13 @@ export function settingsView() {
 
     <section class="section">
       <div class="section__head"><h2 class="section__title">Importa</h2></div>
-      <button type="button" class="btn btn--outline btn--block" data-action="import-merge">${icon('upload', 20)}Aggiungi immobile e costi da un file</button>
+      <div class="stack">
+        <button type="button" class="btn btn--primary btn--block" data-action="import-excel">${icon('upload', 20)}Aggiorna da un foglio Excel</button>
+        <button type="button" class="btn btn--outline btn--block" data-action="import-merge">${icon('upload', 20)}Aggiungi da un file JSON</button>
+      </div>
+      <input type="file" id="excel-file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
       <input type="file" id="merge-file" accept="application/json,.json" hidden>
-      <p class="footnote">Aggiunge al gestionale gli elementi del file, senza toccare quello che c’è già. Un file importato due volte non crea doppioni.</p>
+      <p class="footnote">Il foglio Excel (scaricato come .xlsx) aggiorna le spese di un immobile: importi, IVA, fornitori e pagato. Foto, investitore, aggiornamenti di cantiere e le voci create nell’app restano. Si può ripetere ogni volta che cambi il foglio.</p>
     </section>
 
     <section class="section">
@@ -191,6 +222,17 @@ export function settingsView() {
         }
       });
 
+      root.querySelector('#excel-file').addEventListener('change', async event => {
+        const [file] = event.target.files;
+        event.target.value = '';
+        if (!file) return;
+        try {
+          await importExcel(await readCostFile(file));
+        } catch (error) {
+          toast(error.message || 'Non riesco a leggere il file.');
+        }
+      });
+
       root.querySelector('#merge-file').addEventListener('change', async event => {
         const [file] = event.target.files;
         event.target.value = '';
@@ -218,6 +260,7 @@ registerActions({
   },
   'import-backup': () => document.getElementById('import-file').click(),
   'import-merge': () => document.getElementById('merge-file').click(),
+  'import-excel': () => document.getElementById('excel-file').click(),
   'export-csv': async () => {
     if (await deliverFile(`innvesting-costi-${todayISO()}.csv`, 'text/csv', costsCsv())) toast('Elenco dei costi esportato');
   },
@@ -281,8 +324,12 @@ registerActions({
   },
   'cloud-sync': () => { syncData(); syncNow(); },
   'cloud-sign-out': async () => {
-    await signOut();
-    toast('Uscito dalla condivisione');
+    try {
+      await signOut();
+      toast('Uscito: i dati restano online');
+    } catch (error) {
+      toast(error.message);
+    }
   },
 });
 

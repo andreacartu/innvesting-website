@@ -1,12 +1,9 @@
 const eurNoCents = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0, useGrouping: 'always' });
-const eurCents = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, useGrouping: 'always' });
 const percentFmt = new Intl.NumberFormat('it-IT', { style: 'percent', maximumFractionDigits: 0 });
 const dateFmt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
 
-export const euro = value => {
-  const n = Number(value) || 0;
-  return (Number.isInteger(n) ? eurNoCents : eurCents).format(n);
-};
+/* Importi mostrati sempre in euro interi: i centesimi restano nei dati e nei calcoli, non sullo schermo. */
+export const euro = value => eurNoCents.format(Number(value) || 0);
 
 export const percent = value => percentFmt.format(value);
 

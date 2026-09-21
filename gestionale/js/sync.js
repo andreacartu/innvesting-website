@@ -65,6 +65,9 @@ async function initialize() {
   const saved = readState();
   if (saved.owner === context.ownerId && saved.cursor) return;
 
+  // La copia sul telefono appartiene a un altro account: il database di questo è l'unica fonte.
+  if (saved.owner && saved.owner !== context.ownerId) await wipeLocal();
+
   const onServer = await serverKeys();
   const hasLocal = !isEmpty();
 

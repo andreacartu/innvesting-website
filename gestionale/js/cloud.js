@@ -4,11 +4,11 @@
 // pubblica online una copia ridotta (vedi snapshot.js) e le foto; la copia si aggiorna da sola a ogni modifica.
 // L'investitore la legge, in sola lettura, dall'area dedicata (investitore.html) accedendo con la sua email.
 
-import { state, subscribe } from './store.js';
+import { pendingCount, state, subscribe, wipeLocal } from './store.js';
 import { getPhotoBlob } from './photos.js';
 import { buildSnapshot, snapshotPhotoIds } from './snapshot.js';
 import { BUCKET, getClient, isConfigured, photoPath } from './supabase-client.js';
-import { forgetSyncState, startSync, stopSync } from './sync.js';
+import { forgetSyncState, startSync, stopSync, sync, syncData } from './sync.js';
 
 export { isConfigured };
 
@@ -58,8 +58,17 @@ export async function verifyCode(email, token) {
   if (error) throw new Error('Codice non valido o scaduto.');
 }
 
+/* Esce dall'account e cancella la copia di questo dispositivo: i dati vivono solo sul database online.
+   Prima si assicura che ogni modifica sia arrivata sul server, altrimenti la perderebbe. */
 export async function signOut() {
+  if (cloud.state !== 'not-admin') {
+    await syncData();
+    if (pendingCount() || sync.state === 'error') throw new Error('Ci sono modifiche non ancora salvate online: riprova con la connessione attiva.');
+  }
   await (await client()).auth.signOut();
+  stopSync();
+  forgetSyncState();
+  await wipeLocal();
 }
 
 async function refreshSession(session) {
@@ -69,11 +78,12 @@ async function refreshSession(session) {
   }
   const supabase = await client();
   const { data: isAdmin, error } = await supabase.rpc('is_admin');
-  if (error || !isAdmin) {
+  if (!error && !isAdmin) {
     stopSync();
     return setStatus({ state: 'not-admin', email: session.user.email, error: '' });
   }
-  setStatus({ state: 'idle', email: session.user.email, error: '' });
+  // Senza rete la verifica non risponde: la sessione salvata basta per aprire la copia sul telefono, le modifiche partiranno dopo.
+  setStatus({ state: error ? 'error' : 'idle', email: session.user.email, error: error ? 'nessuna connessione.' : '' });
   startSync({ supabase, ownerId: session.user.id }); // dati online: da qui l'app scarica e invia le modifiche
   scheduleSync();
 }

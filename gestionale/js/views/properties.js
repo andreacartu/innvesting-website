@@ -1,7 +1,7 @@
 import { html } from '../dom.js';
 import { icon } from '../icons.js';
 import { euro } from '../format.js';
-import { groupBySupplier, payState, propertyCode, propertySummary } from '../calc.js';
+import { costRemaining, costTotal, groupBySupplier, payState, propertyCode, propertySummary, sum } from '../calc.js';
 import { TIPI_FORNITORE, labelOf } from '../labels.js';
 import { bar, costRow, detailBar, emptyState, filterChips, propertyStatusBadge, rootBar } from '../components.js';
 import { registerActions, toast } from '../actions.js';
@@ -76,6 +76,16 @@ export function propertiesView() {
 
 /* ── Scheda immobile ────────────────────────────────────────────────────── */
 
+/* Riga che spiega cosa mostra il filtro attivo, con il totale delle voci che ne fanno parte. */
+function filterSummary(shown) {
+  const count = `${shown.length} ${shown.length === 1 ? 'voce' : 'voci'}`;
+  switch (ui.costFilter) {
+    case 'da-saldare': return html`<p class="footnote filter-summary">${count} ancora da saldare: restano <strong>${euro(sum(shown.map(costRemaining)))}</strong> su un totale di ${euro(sum(shown.map(costTotal)))}.</p>`;
+    case 'saldato': return html`<p class="footnote filter-summary">${count} già saldate, per un totale di <strong>${euro(sum(shown.map(costTotal)))}</strong>.</p>`;
+    default: return '';
+  }
+}
+
 function costsTab(property, summary) {
   if (ui.costFilterFor !== property.id) { ui.costFilterFor = property.id; ui.costFilter = 'tutti'; }
   const shown = summary.costs.filter(c => matchesCostFilter(c, ui.costFilter));
@@ -86,8 +96,9 @@ function costsTab(property, summary) {
       <button type="button" class="btn btn--primary btn--sm" data-action="new-cost" data-property="${property.id}">${icon('plus', 18)}Nuovo</button>
     </div>
     ${summary.costs.length > 0 && filterChips('costFilter', ui.costFilter, COST_FILTERS)}
+    ${shown.length > 0 && filterSummary(shown)}
     ${shown.length
-      ? costZones({ all: summary.costs, shown, renderCost: c => costRow(c), openKeys: ui.openZones, scope: property.id })
+      ? costZones({ costs: shown, renderCost: c => costRow(c), openKeys: ui.openZones, scope: property.id })
       : emptyState(
           summary.costs.length ? 'Nessun costo in questa vista' : 'Ancora nessun costo',
           summary.costs.length ? 'Cambia filtro per vedere gli altri.' : 'Registra le spese: fornitore, importo, acconti versati e quanto manca al saldo.'

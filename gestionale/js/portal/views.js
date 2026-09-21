@@ -101,7 +101,7 @@ const updatesSection = (row, data, photoUrl) => data.updates.length
   : html`<div class="empty"><p class="empty__title">Nessun aggiornamento, per ora</p><p>Qui compariranno le novità del cantiere, con le foto, man mano che i lavori procedono.</p></div>`;
 
 const costsSection = (row, data, openZones) => data.costs.length
-  ? html`${costZones({ all: data.costs, renderCost: costItem, openKeys: openZones, scope: row.id })}<p class="footnote">Gli importi comprendono l’IVA. Apri una zona per vedere le voci e tocca una voce per vedere acconti e saldi.</p>`
+  ? html`${costZones({ costs: data.costs, renderCost: costItem, openKeys: openZones, scope: row.id })}<p class="footnote">Gli importi comprendono l’IVA. Apri una zona per vedere le voci e tocca una voce per vedere acconti e saldi.</p>`
   : html`<p class="muted">Nessuna spesa registrata, per ora.</p>`;
 
 function suppliersSection(data) {

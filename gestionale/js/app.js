@@ -8,6 +8,7 @@ import { costView } from './views/costs.js';
 import { paymentsView } from './views/payments.js';
 import { suppliersView, supplierView } from './views/suppliers.js';
 import { settingsView } from './views/settings.js';
+import { gateView } from './views/gate.js';
 import { initLock, isLocked } from './lock.js';
 import { initCloud } from './cloud.js';
 import { hydratePhotos } from './photos.js';
@@ -56,6 +57,15 @@ let lastPath = null;
 
 function render() {
   if (isLocked()) return; // nessun dato sullo schermo finché non si sblocca
+  const gate = gateView();
+  if (gate) {
+    topbar.innerHTML = '';
+    view.innerHTML = gate.body.value;
+    tabbar.innerHTML = '';
+    lastPath = null;
+    return;
+  }
+
   const resolved = resolveRoute();
   const screen = resolved?.route.view(...resolved.params);
   if (!screen) {
@@ -76,6 +86,7 @@ function render() {
 }
 
 registerActions({
+  'gate-retry': () => location.reload(),
   'set-filter': el => {
     ui[el.dataset.key] = el.dataset.value;
     render();

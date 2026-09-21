@@ -1,12 +1,14 @@
 // Archivio dati del gestionale.
 //
-// La copia di lavoro sta nel browser (localStorage): l'app si apre subito e funziona anche senza rete.
+// La copia di lavoro nel browser (localStorage) è solo una cache: l'archivio vero è il database online (accesso obbligatorio, vedi views/gate.js).
+// Serve ad aprire l'app subito e a lavorare senza rete; uscendo dall'account viene cancellata.
 // Se l'accesso online è attivo, `sync.js` tiene questa copia allineata al server (Supabase): ogni modifica finisce in una
 // coda di invio ("outbox") e le modifiche fatte da altri dispositivi arrivano con `applyRemote`.
 // Ogni modifica passa da `commit()`, che salva e avvisa chi ascolta (la UI si ridisegna).
 
 import { buildDemo } from './demo.js';
 import { exportPhotos, importPhotos, listPhotos, pruneOrphans, removePhotos } from './photos.js';
+import { costPaid } from './calc.js';
 
 const KEY = 'innvesting-gestionale-v1';
 const OUTBOX_KEY = 'innvesting-gestionale-outbox';
@@ -388,6 +390,99 @@ export function mergeImport(imported) {
 
   commit();
   return added;
+}
+
+/* ── Aggiornamento da un foglio Excel ───────────────────────────────────── */
+
+const norm = text => String(text ?? '').trim().toLowerCase().replace(/\s+/g, ' ');
+const slug = text => norm(text).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const costKey = cost => `${norm(cost.zona)}|${norm(cost.descrizione)}`;
+
+/* Abbina le voci del foglio a quelle già presenti nell'immobile (stessa zona e stessa voce). Le voci di un import
+   precedente che non compaiono più nel foglio spariscono; quelle create direttamente nell'app non si toccano. */
+function matchExcelCosts(plan, propertyId) {
+  const existing = propertyId ? data.costs.filter(c => c.propertyId === propertyId) : [];
+  const queues = new Map();
+  existing.forEach(cost => queues.set(costKey(cost), [...(queues.get(costKey(cost)) ?? []), cost]));
+
+  const pairs = plan.costs.map(item => ({ item, cost: queues.get(costKey(item))?.shift() ?? null }));
+  const matched = new Set(pairs.map(pair => pair.cost).filter(Boolean));
+  const removed = existing.filter(cost => cost.origine === 'excel' && !matched.has(cost));
+  return { pairs, removed, kept: existing.filter(cost => cost.origine !== 'excel' && !matched.has(cost)) };
+}
+
+/* Anteprima: quante voci si aggiungono, si aggiornano, spariscono o restano. */
+export function planExcelImport(plan, propertyId) {
+  const { pairs, removed, kept } = matchExcelCosts(plan, propertyId);
+  return { added: pairs.filter(p => !p.cost).length, updated: pairs.filter(p => p.cost).length, removed: removed.length, kept: kept.length };
+}
+
+/* Aggiorna (o crea) un immobile con i dati del foglio. Nell'immobile si toccano solo prezzi e budget; foto, investitore,
+   avanzamento e aggiornamenti restano. Nelle voci del foglio importi, IVA e pagamenti seguono il foglio, salvo quando
+   i pagamenti già registrati nell'app hanno lo stesso totale (si tengono, con le loro date). */
+export function applyExcelImport(plan, { propertyId = '', nome = '' } = {}) {
+  const summary = { added: 0, updated: 0, removed: 0, kept: 0, suppliersAdded: 0, suppliersRemoved: 0 };
+
+  let property = propertyId ? getProperty(propertyId) : null;
+  if (!property) {
+    property = {
+      id: uid(), numero: data.meta.nextN++, nome: nome || plan.sheetName, indirizzo: '', cliente: '', investitoreNome: '', investitoreEmail: '',
+      condiviso: false, stato: 'cantiere', avanzamento: 0, photoId: '', prezzoVendita: null, note: '',
+    };
+    data.properties.push(property);
+  }
+  Object.assign(property, plan.property);
+  mark('property', property.id);
+
+  const supplierByName = new Map(data.suppliers.map(s => [norm(s.nome), s.id]));
+  const supplierFor = fornitore => {
+    if (!fornitore) return '';
+    const key = norm(fornitore.nome);
+    if (supplierByName.has(key)) return supplierByName.get(key);
+    let id = `imp-s-${slug(fornitore.nome)}`;
+    if (getSupplier(id)) id = `${id}-${uid().slice(0, 4)}`;
+    data.suppliers.push({ id, nome: fornitore.nome, tipo: fornitore.tipo, referente: '', telefono: '', email: '', note: '' });
+    mark('supplier', id);
+    supplierByName.set(key, id);
+    summary.suppliersAdded++;
+    return id;
+  };
+
+  const { pairs, removed, kept } = matchExcelCosts(plan, property.id);
+  for (const { item, cost } of pairs) {
+    const fields = {
+      descrizione: item.descrizione, zona: item.zona, categoria: item.categoria, supplierId: supplierFor(item.fornitore),
+      importo: item.importo, iva: item.iva, origine: 'excel',
+    };
+    const payment = () => [{ id: uid(), nota: item.pagato >= item.totale - 0.01 ? 'Saldo' : 'Acconto', importo: item.pagato, data: '', pagato: true }];
+
+    if (!cost) {
+      data.costs.push({ id: uid(), propertyId: property.id, data: '', link: item.link, note: item.note, ...fields, pagamenti: item.pagato > 0 ? payment() : [] });
+      mark('cost', data.costs.at(-1).id);
+      summary.added++;
+      continue;
+    }
+
+    const before = JSON.stringify(cost);
+    Object.assign(cost, fields, { link: item.link || cost.link || '', note: item.note || cost.note || '' });
+    if (Math.abs(costPaid(cost) - item.pagato) > 0.004) cost.pagamenti = item.pagato > 0 ? payment() : [];
+    if (JSON.stringify(cost) !== before) { mark('cost', cost.id); summary.updated++; }
+  }
+
+  removed.forEach(cost => mark('cost', cost.id, 'delete'));
+  data.costs = data.costs.filter(cost => !removed.includes(cost));
+  summary.removed = removed.length;
+  summary.kept = kept.length;
+
+  // Fornitori nati da un import e non più usati da nessuna voce (e senza recapiti inseriti a mano) spariscono.
+  const used = new Set(data.costs.map(c => c.supplierId));
+  const stale = data.suppliers.filter(s => s.id.startsWith('imp-s-') && !used.has(s.id) && !s.telefono && !s.email && !s.referente && !s.note);
+  stale.forEach(s => mark('supplier', s.id, 'delete'));
+  data.suppliers = data.suppliers.filter(s => !stale.includes(s));
+  summary.suppliersRemoved = stale.length;
+
+  commit();
+  return { ...summary, propertyId: property.id };
 }
 
 /* Ripristino da backup: sostituisce tutto, anche online se l'accesso è attivo. */

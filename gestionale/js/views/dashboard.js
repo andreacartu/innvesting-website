@@ -21,7 +21,6 @@ function welcome() {
       <div class="btn-row">
         <button type="button" class="btn btn--primary" data-action="new-property">${icon('plus', 20)}Aggiungi il primo immobile</button>
         ${!isConfigured() && html`<button type="button" class="btn btn--outline" data-action="load-demo">Prova con dati di esempio</button>`}
-        ${cloud.state === 'signed-out' && html`<a class="btn btn--outline" href="#/altro">Accedi per ritrovare i dati online</a>`}
       </div>
     </section>`;
 }
@@ -37,7 +36,6 @@ export function dashboardView() {
   const active = properties.filter(p => p.stato !== 'venduto');
 
   const body = html`
-    ${cloud.state === 'signed-out' && html`<div class="alert">${icon('alert', 20)}<p>I dati sono solo su questo dispositivo. <a href="#/altro">Accedi</a> per salvarli online e ritrovarli ovunque.</p></div>`}
     ${cloud.state === 'off' && backupIsStale() && html`<div class="alert">${icon('alert', 20)}<p>Non fai un backup da un po’. I dati sono salvati solo su questo dispositivo: <a href="#/altro">esegui un backup</a>.</p></div>`}
     <p class="eyebrow">Oggi</p>
     <h1 class="page-title">Panoramica</h1>
