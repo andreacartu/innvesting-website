@@ -8,7 +8,7 @@
 import { html } from './dom.js';
 import { icon } from './icons.js';
 import { toast } from './actions.js';
-import { resetAll } from './store.js';
+import { pendingCount, resetAll } from './store.js';
 import { signOutLocal } from './cloud.js';
 
 const CONFIG_KEY = 'innvesting-gestionale-lock';
@@ -149,6 +149,13 @@ function renderPanel() {
   root.classList.toggle('lock--pad', inPad());
   if (mode === 'idle') {
     panel.innerHTML = html`<button type="button" class="lock__enter" data-lock="enter">${config ? 'Accedi' : 'Inizia'}</button>`.value;
+  } else if (mode === 'forgot') {
+    const pending = pendingCount();
+    panel.innerHTML = html`
+      <p class="lock__title">Codice dimenticato</p>
+      <p class="lock__message">Senza il codice l’unico modo per rientrare è eliminare i dati da questo dispositivo e uscire dall’account. I dati salvati online restano al sicuro: li ritrovi accedendo di nuovo con la tua email.${pending ? ` Attenzione: ${pending} ${pending === 1 ? 'modifica non è ancora stata salvata online e andrà persa' : 'modifiche non sono ancora state salvate online e andranno perse'}.` : ''}</p>
+      <button type="button" class="lock__enter" data-lock="forgot-confirm">Elimina i dati da questo dispositivo</button>
+      <div class="lock__links"><button type="button" class="lock__link" data-lock="forgot-cancel">Annulla</button></div>`.value;
   } else if (mode === 'bio-offer') {
     panel.innerHTML = html`
       <p class="lock__title">Sblocca con Face ID</p>
@@ -353,11 +360,14 @@ const handlers = {
   delete: pressDelete,
   bio: unlockWithBiometric,
   cancel: cancelChange,
-  async forgot() {
-    const ok = confirm('Per proteggere i dati, senza il codice l’unico modo per rientrare è eliminare i dati da questo dispositivo e uscire dall’account. I dati salvati online restano al sicuro: li ritrovi accedendo di nuovo con la tua email. Vuoi procedere?');
-    if (!ok) return;
-    await signOutLocal(); // senza uscire dall'account, i dati tornerebbero subito dal server e il blocco sarebbe aggirato
-    await resetAll();
+  forgot: () => setMode('forgot'),
+  'forgot-cancel': () => setMode('verify'),
+  async 'forgot-confirm'(el) {
+    el.disabled = true;
+    // Ogni passaggio ha un tempo massimo: se uno si blocca, il pulsante non deve restare morto.
+    const attempt = step => Promise.race([step().catch(() => {}), new Promise(resolve => setTimeout(resolve, 4000))]);
+    await attempt(signOutLocal); // senza uscire dall'account, i dati tornerebbero subito dal server e il blocco sarebbe aggirato
+    await attempt(resetAll);
     config = null;
     saveConfig();
     setMode('idle');
