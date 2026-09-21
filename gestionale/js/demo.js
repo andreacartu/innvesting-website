@@ -73,6 +73,9 @@ export function buildDemo() {
     ], { data: day(-130) }),
   ];
 
+  // Zone di esempio: professionisti, lavori e cucina/arredi.
+  costs.forEach(c => { c.zona = c.categoria === 'progetto' ? 'Professionisti' : ['cucina', 'arredi'].includes(c.categoria) ? 'Cucina e arredi' : 'Lavori di ristrutturazione'; });
+
   const update = (propertyId, offset, titolo, testo) => ({ id: id('u'), propertyId, data: day(offset), titolo, testo, photoIds: [], visibile: true });
 
   const updates = [

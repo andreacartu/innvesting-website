@@ -28,6 +28,7 @@ export function buildSnapshot(property, { suppliers, costs, updates }) {
       id: c.id,
       supplierId: c.supplierId || '',
       descrizione: c.descrizione,
+      zona: (c.zona ?? '').trim(),
       categoria: c.categoria ?? '',
       importo: c.importo,
       iva: c.iva ?? 0,

@@ -6,6 +6,7 @@ import { registerActions, toast } from '../actions.js';
 import { BUCKET, getClient, isConfigured, photoPath } from '../supabase-client.js';
 import { detailView, listView, loginView } from './views.js';
 import '../timeline.js';
+import { rememberOpenZones } from '../cost-zones.js';
 
 const AUTH_KEY = 'innvesting-auth-investor';
 const SIGNED_URL_TTL = 3600; // secondi
@@ -20,6 +21,7 @@ let live = false;
 let updatedAt = null;
 let pollTimer = null;
 const signedUrls = new Map(); // percorso → { url, expires }
+const openZones = new Set(); // zone delle spese aperte, per non richiuderle a ogni aggiornamento in tempo reale
 let loginState = { step: 'email', email: '', message: '' };
 
 /* ── Barra superiore ────────────────────────────────────────────────────── */
@@ -85,7 +87,7 @@ function render() {
 
   if (row && (id || rows.length === 1)) {
     drawTopbar({ back: rows.length > 1 ? '#/' : '', signedIn: true });
-    view.innerHTML = detailView(row, tab, photoUrl).value;
+    view.innerHTML = detailView(row, tab, photoUrl, openZones).value;
   } else {
     drawTopbar({ signedIn: true });
     view.innerHTML = listView(rows, photoUrl).value;
@@ -172,6 +174,7 @@ registerActions({
   },
 });
 
+rememberOpenZones(view, openZones);
 window.addEventListener('hashchange', () => { if (rows.length) render(); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && rows.length) refresh(); });
 

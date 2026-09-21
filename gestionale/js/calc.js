@@ -97,3 +97,23 @@ export function groupBySupplier(costs, suppliers) {
     .map(group => ({ ...group, totale: sum(group.costs.map(costTotal)), pagato: sum(group.costs.map(costPaid)) }))
     .sort((a, b) => b.totale - a.totale);
 }
+
+/* ── Zone (gruppi di spese: una stanza, "Professionisti", "Lavori"…) ─────── */
+
+export const NO_ZONE = 'Altre spese';
+export const zoneOf = cost => (cost.zona ?? '').trim() || NO_ZONE;
+
+/* Raggruppa le spese per zona, nell'ordine in cui le zone compaiono per la prima volta; per ogni zona i totali. */
+export function groupByZone(costs) {
+  const groups = new Map();
+  costs.forEach(cost => {
+    const zone = zoneOf(cost);
+    if (!groups.has(zone)) groups.set(zone, { zone, costs: [] });
+    groups.get(zone).costs.push(cost);
+  });
+  return [...groups.values()].map(group => {
+    const totale = sum(group.costs.map(costTotal));
+    const pagato = sum(group.costs.map(costPaid));
+    return { ...group, totale, pagato, daSaldare: round2(totale - pagato) };
+  });
+}

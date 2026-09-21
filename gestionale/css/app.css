@@ -621,3 +621,19 @@ textarea.field__input { min-height: 88px; resize: vertical; }
 .pay-list li + li { border-top: 1px solid var(--color-line); }
 .pay-list li > span:last-child { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; }
 .share-invite { margin-top: 8px; }
+
+/* Spese raggruppate per zona (tendine) */
+.zones { border-top: 1px solid var(--color-line); }
+.zone { border-bottom: 1px solid var(--color-line); }
+.zone__head { display: flex; align-items: center; gap: 12px; padding: 16px 0; list-style: none; cursor: pointer; }
+.zone__head::-webkit-details-marker { display: none; }
+.zone__body { flex: 1; min-width: 0; }
+.zone__top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.zone__name { font-size: 18px; font-weight: 800; letter-spacing: -.015em; overflow-wrap: anywhere; }
+.zone__amount { flex: none; font-weight: 800; }
+.zone__foot { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 6px 0 10px; font-size: 13px; color: var(--color-muted); }
+.zone__foot strong { color: var(--color-text); font-weight: 800; }
+.zone__chevron { flex: none; display: flex; color: var(--color-muted); transition: transform .2s ease; }
+.zone[open] > .zone__head .zone__chevron { transform: rotate(90deg); }
+.zone__items { margin: 0 0 12px; padding-left: 12px; border-top: 0; border-left: 2px solid var(--color-accent); }
+.zone__items .row:last-child { border-bottom: 0; }

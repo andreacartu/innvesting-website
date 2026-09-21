@@ -9,6 +9,7 @@ import { CATEGORIE_COSTO, STATI_IMMOBILE, TIPI_FORNITORE, labelOf } from '../lab
 import { badge, bar } from '../ui-parts.js';
 import { summaryStats } from '../summary.js';
 import { updatesTimeline } from '../timeline.js';
+import { costZones } from '../cost-zones.js';
 
 export const TABS = [['aggiornamenti', 'Lavori'], ['spese', 'Spese'], ['imprese', 'Imprese']];
 
@@ -99,8 +100,8 @@ const updatesSection = (row, data, photoUrl) => data.updates.length
   ? updatesTimeline(data.updates, { photo: remotePhoto(row, photoUrl) })
   : html`<div class="empty"><p class="empty__title">Nessun aggiornamento, per ora</p><p>Qui compariranno le novità del cantiere, con le foto, man mano che i lavori procedono.</p></div>`;
 
-const costsSection = data => data.costs.length
-  ? html`<div class="list">${data.costs.map(costItem)}</div><p class="footnote">Gli importi comprendono l’IVA. Tocca una voce per vedere acconti e saldi.</p>`
+const costsSection = (row, data, openZones) => data.costs.length
+  ? html`${costZones({ all: data.costs, renderCost: costItem, openKeys: openZones, scope: row.id })}<p class="footnote">Gli importi comprendono l’IVA. Apri una zona per vedere le voci e tocca una voce per vedere acconti e saldi.</p>`
   : html`<p class="muted">Nessuna spesa registrata, per ora.</p>`;
 
 function suppliersSection(data) {
@@ -116,11 +117,11 @@ function suppliersSection(data) {
     </div>`)}</div>`;
 }
 
-export function detailView(row, tab, photoUrl) {
+export function detailView(row, tab, photoUrl, openZones = new Set()) {
   const data = unpack(row);
   const { property } = data;
   const cover = property.photoId && photoUrl(row.id, property.photoId);
-  const content = { aggiornamenti: updatesSection(row, data, photoUrl), spese: costsSection(data), imprese: suppliersSection(data) }[tab] ?? '';
+  const content = { aggiornamenti: updatesSection(row, data, photoUrl), spese: costsSection(row, data, openZones), imprese: suppliersSection(data) }[tab] ?? '';
 
   return html`
     ${cover && html`<div class="cover"><img src="${cover}" alt="Foto esterna di ${property.nome}"></div>`}

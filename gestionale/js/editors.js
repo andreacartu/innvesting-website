@@ -11,6 +11,13 @@ import {
 } from './store.js';
 
 const propertyOptions = () => state().properties.map(p => ({ value: p.id, label: `${propertyCode(p)} · ${p.nome}` }));
+/* Suggerimenti per il campo zona: quelle già usate nell'immobile, poi alcune comuni. */
+const DEFAULT_ZONES = ['Professionisti', 'Lavori di ristrutturazione', 'Cucina', 'Bagno', 'Soggiorno', 'Camera', 'Ingresso', 'Esterni'];
+const zoneSuggestions = propertyId => {
+  const used = state().costs.filter(c => !propertyId || c.propertyId === propertyId).map(c => (c.zona ?? '').trim()).filter(Boolean);
+  return [...new Set([...used, ...DEFAULT_ZONES])];
+};
+
 const supplierOptions = () => [...state().suppliers].sort((a, b) => a.nome.localeCompare(b.nome, 'it')).map(s => ({ value: s.id, label: s.nome }));
 
 /* ── Immobile ───────────────────────────────────────────────────────────── */
@@ -121,6 +128,7 @@ export function openCostForm({ id, propertyId, supplierId } = {}) {
     fields: [
       { name: 'propertyId', label: 'Immobile', type: 'select', required: true, options: propertyOptions, placeholder: 'Scegli l’immobile' },
       { name: 'descrizione', label: 'Voce', required: true, placeholder: 'Es. Impianto elettrico completo' },
+      { name: 'zona', label: 'Zona o gruppo', placeholder: 'Es. Bagno, Cucina, Professionisti', suggestions: zoneSuggestions(cost?.propertyId ?? propertyId), hint: 'Raggruppa le spese nella scheda dell’immobile: una tendina per ogni zona.' },
       { name: 'categoria', label: 'Categoria', type: 'select', options: CATEGORIE_COSTO },
       { name: 'supplierId', label: 'Fornitore', type: 'select', options: supplierOptions, placeholder: 'Nessun fornitore', allowNew: { label: 'Nuovo fornitore', create: () => openSupplierForm() } },
       { name: 'importo', label: 'Importo', type: 'money', required: true, half: true },

@@ -44,6 +44,7 @@ export const ALIQUOTE_IVA = [
   { value: 4, label: '+ IVA 4%' },
   { value: 10, label: '+ IVA 10%' },
   { value: 22, label: '+ IVA 22%' },
+  { value: 25, label: '+ IVA 25%' },
 ];
 
 export const labelOf = (list, value) => list.find(item => String(item.value) === String(value))?.label ?? '';

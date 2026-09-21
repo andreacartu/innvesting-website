@@ -9,6 +9,7 @@ import { openCostForm, openPropertyForm } from '../editors.js';
 import { getProperty, state } from '../store.js';
 import { summaryStats } from '../summary.js';
 import { updatesTab } from './updates.js';
+import { costZones, rememberOpenZones } from '../cost-zones.js';
 import { shareStatusLabel } from '../cloud.js';
 import { ui } from '../ui-state.js';
 
@@ -86,7 +87,7 @@ function costsTab(property, summary) {
     </div>
     ${summary.costs.length > 0 && filterChips('costFilter', ui.costFilter, COST_FILTERS)}
     ${shown.length
-      ? html`<div class="list">${shown.map(c => costRow(c))}</div>`
+      ? costZones({ all: summary.costs, shown, renderCost: c => costRow(c), openKeys: ui.openZones, scope: property.id })
       : emptyState(
           summary.costs.length ? 'Nessun costo in questa vista' : 'Ancora nessun costo',
           summary.costs.length ? 'Cambia filtro per vedere gli altri.' : 'Registra le spese: fornitore, importo, acconti versati e quanto manca al saldo.'
@@ -168,6 +169,7 @@ export function propertyView(id, tab = 'costi') {
   return {
     topbar: detailBar({ title: `${propertyCode(property)} · ${property.nome}`, back: '#/immobili', action: { name: 'edit-property', data: html`data-id="${property.id}"`, icon: 'edit', label: 'Modifica immobile' } }),
     body,
+    mount: root => rememberOpenZones(root, ui.openZones),
   };
 }
 

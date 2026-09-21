@@ -60,6 +60,7 @@ export function costView(id) {
   const rows = [
     ['Immobile', property && html`<a href="#/immobili/${property.id}">${propertyCode(property)} · ${property.nome}</a>`],
     ['Fornitore', supplier && html`<a href="#/fornitori/${supplier.id}">${supplier.nome}</a>`],
+    ['Zona', cost.zona],
     ['Categoria', labelOf(CATEGORIE_COSTO, cost.categoria)],
     ['Importo', euro(cost.importo)],
     ['IVA', cost.iva ? `${cost.iva}% (${euro(costTotal(cost) - cost.importo)})` : labelOf(ALIQUOTE_IVA, 0)],

@@ -50,12 +50,13 @@ const csvNumber = value => String(value).replace('.', ',');
 
 function costsCsv() {
   const { costs, properties, suppliers } = state();
-  const header = ['Immobile', 'Fornitore', 'Voce', 'Categoria', 'Importo', 'IVA %', 'Totale', 'Pagato', 'Residuo'];
+  const header = ['Immobile', 'Zona', 'Fornitore', 'Voce', 'Categoria', 'Importo', 'IVA %', 'Totale', 'Pagato', 'Residuo'];
   const lines = costs.map(cost => {
     const property = properties.find(p => p.id === cost.propertyId);
     const supplier = suppliers.find(s => s.id === cost.supplierId);
     return [
       property ? `${propertyCode(property)} ${property.nome}` : '',
+      cost.zona ?? '',
       supplier?.nome ?? '',
       cost.descrizione,
       labelOf(CATEGORIE_COSTO, cost.categoria),

@@ -4,6 +4,7 @@ export const ui = {
   propertyFilter: 'attivi',
   costFilter: 'tutti',
   costFilterFor: null,
+  openZones: new Set(), // tendine delle zone aperte nella scheda Costi
   paymentFilter: 'da-pagare',
   supplierQuery: '',
 };

@@ -2,7 +2,7 @@
 // File dell'app: prima la rete (così gli aggiornamenti arrivano subito), la copia salvata se si è offline.
 // Font e altre risorse esterne: prima la copia salvata.
 
-const CACHE = 'innvesting-gestionale-v5';
+const CACHE = 'innvesting-gestionale-v6';
 
 // Solo file statici (font e libreria): mai dati degli immobili.
 const STATIC_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net'];
@@ -22,6 +22,7 @@ const SHELL = [
   'js/icons.js',
   'js/photos.js',
   'js/cloud.js',
+  'js/cost-zones.js',
   'js/cloud-config.js',
   'js/supabase-client.js',
   'js/snapshot.js',
@@ -79,7 +80,8 @@ self.addEventListener('fetch', event => {
 async function networkFirst(request) {
   const cache = await caches.open(CACHE);
   try {
-    const response = await fetch(request);
+    // "no-cache": chiede sempre al server se il file è cambiato, invece di fidarsi della copia tenuta per qualche minuto dal browser.
+    const response = await fetch(request, { cache: 'no-cache' });
     if (response.ok) cache.put(request, response.clone());
     return response;
   } catch {
