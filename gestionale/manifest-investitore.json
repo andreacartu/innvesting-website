@@ -1,0 +1,17 @@
+{
+  "name": "INNvesting · Il tuo investimento",
+  "short_name": "INNvesting",
+  "description": "Avanzamento dei lavori, spese e pagamenti del tuo immobile.",
+  "lang": "it",
+  "start_url": "investitore.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf6f0",
+  "theme_color": "#fbf6f0",
+  "icons": [
+    { "src": "images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "images/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
