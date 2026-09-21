@@ -95,13 +95,24 @@ export async function signOutLocal() {
   forgetSyncState();
 }
 
+/* Sessione salvata ma non rinnovabile perché manca la rete (il token dura un'ora): si resta dentro con la copia sul telefono.
+   Appena torna la connessione la libreria rinnova la sessione da sola e la sincronizzazione riparte. */
+function openOffline(error) {
+  let email = '';
+  try { email = JSON.parse(localStorage.getItem(AUTH_KEY))?.user?.email ?? ''; } catch { /* nessuna sessione salvata */ }
+  if (!email) return setStatus({ state: 'signed-out', email: '', error: '' });
+  console.warn('Sessione non rinnovabile ora:', error.message);
+  setStatus({ state: 'error', email, error: 'nessuna connessione.' });
+}
+
 export async function initCloud() {
   if (!isConfigured()) return;
   try {
     const supabase = await client();
     // Le chiamate a Supabase dentro questo callback vanno rimandate, altrimenti la libreria si blocca.
     supabase.auth.onAuthStateChange((_event, session) => { setTimeout(() => refreshSession(session), 0); });
-    const { data } = await supabase.auth.getSession();
+    const { data, error } = await supabase.auth.getSession();
+    if (!data.session && error) return openOffline(error);
     await refreshSession(data.session);
   } catch (error) {
     setStatus({ state: 'error', error: 'Impossibile collegarsi al servizio online.' });
