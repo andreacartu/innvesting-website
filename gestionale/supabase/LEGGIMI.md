@@ -47,3 +47,12 @@ Dopo il commit su `main`, il gestionale è su `.../gestionale/` e l'area investi
 - Le foto sono compresse (lato lungo 1400 px) prima di essere pubblicate.
 - Se togli la spunta di condivisione o elimini l'immobile, la copia online e le sue foto vengono cancellate al primo aggiornamento.
 - Lo spazio gratuito di Supabase (1 GB di file e 500 MB di database) è ampio per questo uso.
+
+## Rafforzare la sicurezza
+
+1. **Esegui [`rafforza-sicurezza.sql`](rafforza-sicurezza.sql)** nell'SQL Editor: limita chi può chiamare la funzione degli amministratori e accetta nell'archivio solo foto JPEG fino a 5 MB.
+2. **Accorcia la validità del codice**: in Supabase, **Authentication > Sign In / Providers > Email**, imposta la scadenza del codice (OTP expiry) a **600** secondi (10 minuti) invece di un'ora.
+3. **Attiva il CAPTCHA**: **Authentication > Attack Protection**, abilita Cloudflare Turnstile o hCaptcha. Senza, chiunque può far partire email di codice verso indirizzi altrui dal tuo Gmail. (Dopo averlo attivato, il gestionale e l'area investitore devono inviare anche il token del CAPTCHA: chiedilo prima di attivarlo, perché richiede una piccola modifica.)
+4. **Attiva la verifica in due passaggi** su Google, GitHub e Supabase. Chi entra nel tuo GitHub può cambiare il codice dell'app; chi entra in Supabase può leggere i dati condivisi.
+5. **Controlla ogni tanto** **Authentication > Users**: devono comparire solo te e i tuoi investitori.
+6. **Non inserire mai nel repository** la chiave *secret* di Supabase, la password per le app di Google o i backup del gestionale. La chiave *publishable* in `js/cloud-config.js` è invece pensata per essere pubblica.

@@ -3,7 +3,8 @@
 
 import { CLOUD } from './cloud-config.js';
 
-const SDK_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+// Versione fissata: un aggiornamento della libreria non deve poter cambiare, da solo, il codice che gira con i dati degli immobili.
+const SDK_URL = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/+esm';
 
 export const isConfigured = () => Boolean(CLOUD.url && CLOUD.anonKey);
 

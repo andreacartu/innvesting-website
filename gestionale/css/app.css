@@ -620,3 +620,4 @@ textarea.field__input { min-height: 88px; resize: vertical; }
 .pay-list li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; font-size: 14px; font-weight: 600; }
 .pay-list li + li { border-top: 1px solid var(--color-line); }
 .pay-list li > span:last-child { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; }
+.share-invite { margin-top: 8px; }

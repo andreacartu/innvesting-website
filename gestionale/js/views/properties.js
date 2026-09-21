@@ -156,7 +156,9 @@ export function propertyView(id, tab = 'costi') {
         ${property.cliente && html`<div><dt class="label">Cliente</dt><dd>${property.cliente}</dd></div>`}
         ${property.investitoreNome && html`<div><dt class="label">Investitore</dt><dd>${property.investitoreNome}</dd></div>`}
       </dl>`}
-    ${property.condiviso && html`<p class="share-status">${shareStatusLabel(property)}</p>`}
+    ${property.condiviso && html`
+      <p class="share-status">${shareStatusLabel(property)}</p>
+      <button type="button" class="btn btn--outline btn--sm share-invite" data-action="invite-investor" data-id="${property.id}">${icon('message', 16)}Invia invito all’investitore</button>`}
     ${summaryStats(property, summary)}
     <nav class="tabs" aria-label="Sezioni dell’immobile">
       ${tabs.map(([key, label]) => html`<a class="tabs__item" href="#/immobili/${property.id}/${key}" ${key === tab && html`aria-current="page"`}>${label}</a>`)}
@@ -177,6 +179,19 @@ registerActions({
   'edit-property': async el => {
     const result = await openPropertyForm(el.dataset.id);
     if (result?.deleted) { location.hash = '#/immobili'; toast('Immobile eliminato'); }
+  },
+  // Il messaggio non parte da solo: si apre il foglio di condivisione (WhatsApp, Messaggi, Mail) con testo e link già pronti.
+  'invite-investor': async el => {
+    const property = getProperty(el.dataset.id);
+    const link = new URL('investitore.html', location.href).href;
+    const name = property.investitoreNome ? ` ${property.investitoreNome.split(' ')[0]}` : '';
+    const text = `Ciao${name}, da qui puoi seguire in tempo reale i lavori del tuo immobile (${property.nome}): avanzamento, foto, spese e pagamenti.\n\nApri il link e accedi con questa email: ${property.investitoreEmail}. Ti arriva un codice per entrare, senza password.\n${link}`;
+    try {
+      if (navigator.share) await navigator.share({ title: 'INNvesting: il tuo investimento', text });
+      else { await navigator.clipboard.writeText(text); toast('Invito copiato: incollalo dove vuoi inviarlo'); }
+    } catch (error) {
+      if (error.name !== 'AbortError') toast('Non è stato possibile preparare l’invito');
+    }
   },
   'new-cost': async el => {
     if (!state().properties.length) { toast('Aggiungi prima un immobile'); return; }

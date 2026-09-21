@@ -201,6 +201,51 @@ export function markBackup() {
   commit();
 }
 
+/* Aggiunge al gestionale gli immobili, i fornitori e i costi di un file, senza toccare quello che c'è già.
+   Un elemento con lo stesso id di uno esistente viene saltato (così un file importato due volte non crea doppioni
+   e non sovrascrive le modifiche fatte nel frattempo); i fornitori con lo stesso nome si riusano. */
+export function mergeImport(imported) {
+  const incoming = normalize(imported);
+  const added = { properties: 0, suppliers: 0, costs: 0, updates: 0 };
+
+  const supplierByName = new Map(data.suppliers.map(s => [s.nome.trim().toLowerCase(), s.id]));
+  const supplierIds = new Map(); // id nel file → id nel gestionale
+  for (const supplier of incoming.suppliers) {
+    const key = supplier.nome.trim().toLowerCase();
+    if (supplierByName.has(key)) { supplierIds.set(supplier.id, supplierByName.get(key)); continue; }
+    data.suppliers.push(supplier);
+    supplierByName.set(key, supplier.id);
+    supplierIds.set(supplier.id, supplier.id);
+    added.suppliers++;
+  }
+
+  const knownProperties = new Set(data.properties.map(p => p.id));
+  const newProperties = new Set();
+  for (const property of incoming.properties) {
+    if (knownProperties.has(property.id)) continue;
+    data.properties.push({ ...property, numero: data.meta.nextN++ });
+    newProperties.add(property.id);
+    added.properties++;
+  }
+
+  // Costi e aggiornamenti si aggiungono solo agli immobili nuovi: quelli già presenti restano come sono.
+  const knownCosts = new Set(data.costs.map(c => c.id));
+  for (const cost of incoming.costs) {
+    if (knownCosts.has(cost.id) || !newProperties.has(cost.propertyId)) continue;
+    data.costs.push({ ...cost, supplierId: supplierIds.get(cost.supplierId) ?? '' });
+    added.costs++;
+  }
+  const knownUpdates = new Set(data.updates.map(u => u.id));
+  for (const update of incoming.updates) {
+    if (knownUpdates.has(update.id) || !newProperties.has(update.propertyId)) continue;
+    data.updates.push(update);
+    added.updates++;
+  }
+
+  commit();
+  return added;
+}
+
 export async function replaceAll(imported) {
   const next = normalize(imported);
   await importPhotos(imported.photos);

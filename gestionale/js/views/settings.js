@@ -6,7 +6,7 @@ import { CATEGORIE_COSTO, labelOf } from '../labels.js';
 import { registerActions, toast } from '../actions.js';
 import { rootBar } from '../components.js';
 import { biometric, lockNow, startChangePin } from '../lock.js';
-import { exportBackupJson, isEmpty, loadDemo, markBackup, replaceAll, resetAll, state } from '../store.js';
+import { exportBackupJson, isEmpty, loadDemo, markBackup, mergeImport, replaceAll, resetAll, state } from '../store.js';
 import { cloud, sendCode, signOut, syncNow, verifyCode } from '../cloud.js';
 import { openForm } from '../sheet.js';
 
@@ -40,7 +40,12 @@ async function deliverFile(name, type, content) {
   return true;
 }
 
-const csvCell = value => `"${String(value ?? '').replace(/"/g, '""')}"`;
+/* Un testo che inizia con = + - @ verrebbe eseguito come formula da Excel: lo si neutralizza con un apice (i numeri restano tali). */
+const csvCell = value => {
+  let text = String(value ?? '');
+  if (/^[=+\-@\t\r]/.test(text) && !/^-?\d+(,\d+)?$/.test(text)) text = `'${text}`;
+  return `"${text.replace(/"/g, '""')}"`;
+};
 const csvNumber = value => String(value).replace('.', ',');
 
 function costsCsv() {
@@ -131,6 +136,13 @@ export function settingsView() {
     </section>
 
     <section class="section">
+      <div class="section__head"><h2 class="section__title">Importa</h2></div>
+      <button type="button" class="btn btn--outline btn--block" data-action="import-merge">${icon('upload', 20)}Aggiungi immobile e costi da un file</button>
+      <input type="file" id="merge-file" accept="application/json,.json" hidden>
+      <p class="footnote">Aggiunge al gestionale gli elementi del file, senza toccare quello che c’è già. Un file importato due volte non crea doppioni.</p>
+    </section>
+
+    <section class="section">
       <div class="section__head"><h2 class="section__title">Esporta</h2></div>
       <button type="button" class="btn btn--outline btn--block" data-action="export-csv" ${empty && html`disabled`}>${icon('download', 20)}Costi in formato CSV (Excel)</button>
       <p class="footnote">Un elenco di tutti i costi con importi, IVA, pagato e residuo, utile per il commercialista.</p>
@@ -167,6 +179,21 @@ export function settingsView() {
           toast(error instanceof SyntaxError ? 'Il file non è un backup valido' : error.message);
         }
       });
+
+      root.querySelector('#merge-file').addEventListener('change', async event => {
+        const [file] = event.target.files;
+        event.target.value = '';
+        if (!file) return;
+        try {
+          const imported = JSON.parse(await file.text());
+          const counts = `${imported.properties?.length ?? 0} immobili, ${imported.suppliers?.length ?? 0} fornitori, ${imported.costs?.length ?? 0} costi`;
+          if (!confirm(`Aggiungere al gestionale il contenuto del file (${counts})? Quello che c’è già non viene modificato.`)) return;
+          const added = mergeImport(imported);
+          toast(added.properties || added.costs ? `Aggiunti ${added.properties} immobile e ${added.costs} costi` : 'Niente di nuovo: il file era già stato importato');
+        } catch (error) {
+          toast(error instanceof SyntaxError ? 'Il file non è valido' : error.message);
+        }
+      });
     },
   };
 }
@@ -179,6 +206,7 @@ registerActions({
     }
   },
   'import-backup': () => document.getElementById('import-file').click(),
+  'import-merge': () => document.getElementById('merge-file').click(),
   'export-csv': async () => {
     if (await deliverFile(`innvesting-costi-${todayISO()}.csv`, 'text/csv', costsCsv())) toast('Elenco dei costi esportato');
   },
