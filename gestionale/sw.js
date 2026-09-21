@@ -2,7 +2,7 @@
 // File dell'app: prima la rete (così gli aggiornamenti arrivano subito), la copia salvata se si è offline.
 // Font e altre risorse esterne: prima la copia salvata.
 
-const CACHE = 'innvesting-gestionale-v6';
+const CACHE = 'innvesting-gestionale-v7';
 
 // Solo file statici (font e libreria): mai dati degli immobili.
 const STATIC_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net'];
@@ -22,6 +22,7 @@ const SHELL = [
   'js/icons.js',
   'js/photos.js',
   'js/cloud.js',
+  'js/sync.js',
   'js/cost-zones.js',
   'js/cloud-config.js',
   'js/supabase-client.js',

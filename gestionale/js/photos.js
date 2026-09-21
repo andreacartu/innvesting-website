@@ -81,9 +81,16 @@ function forget(id) {
   urlCache.delete(id);
 }
 
+/* Per le foto scattate su un altro dispositivo: chi ha accesso al server registra qui come scaricarle. */
+let photoFetcher = null;
+export const setPhotoFetcher = fetcher => { photoFetcher = fetcher; };
+
+export const putPhotoBlob = (id, blob) => run('readwrite', store => store.put({ id, blob, createdAt: Date.now() }));
+
 export async function photoUrl(id) {
   if (urlCache.has(id)) return urlCache.get(id);
-  const blob = await getPhotoBlob(id);
+  let blob = await getPhotoBlob(id);
+  if (!blob && photoFetcher) blob = await photoFetcher(id).catch(() => null);
   if (!blob) return null;
   const url = URL.createObjectURL(blob);
   urlCache.set(id, url);

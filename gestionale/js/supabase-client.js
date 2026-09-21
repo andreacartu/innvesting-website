@@ -23,3 +23,7 @@ export const BUCKET = 'photos';
 
 /* Percorso di una foto nell'archivio: proprietario / immobile / foto. Le regole di accesso si basano su questa struttura. */
 export const photoPath = (ownerId, propertyId, photoId) => `${ownerId}/${propertyId}/${photoId}.jpg`;
+
+/* Le foto del gestionale, per l'uso su più dispositivi, stanno in una cartella "private" che l'investitore non può leggere:
+   il suo accesso riguarda solo la cartella con l'id dell'immobile (vedi photoPath). */
+export const privatePhotoPath = (ownerId, propertyId, photoId) => `${ownerId}/private/${propertyId}/${photoId}.jpg`;

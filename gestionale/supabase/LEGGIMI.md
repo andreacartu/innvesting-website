@@ -41,6 +41,23 @@ Dopo il commit su `main`, il gestionale è su `.../gestionale/` e l'area investi
 2. Apri un immobile, **Modifica**, inserisci nome ed email dell'investitore e attiva "Condividi i lavori in tempo reale".
 3. Invia all'investitore il link `investitore.html`: entra con la sua email e vede l'immobile.
 
+
+## Salvare i dati online e usarli da più dispositivi
+
+Oltre alla condivisione con gli investitori, il gestionale può tenere **tutti i tuoi dati** (immobili, fornitori, costi, pagamenti, aggiornamenti di cantiere e foto) sul server. Così non importi più nulla: li ritrovi aggiornati su ogni dispositivo in cui accedi con la tua email.
+
+1. In Supabase, **SQL Editor > New query**: incolla il contenuto di [`dati-online.sql`](dati-online.sql) e premi **Run**. Crea la tabella `records` (accessibile solo a te) e attiva gli aggiornamenti in tempo reale.
+2. Nel gestionale: **Altro > Archivio online > Accedi** con la tua email. Al primo accesso i dati di questo dispositivo vengono caricati online. Su un altro dispositivo, dopo l'accesso, i dati arrivano da soli.
+3. Da quel momento ogni modifica parte da sola e quelle fatte altrove compaiono senza fare nulla. Senza rete, le modifiche restano sul dispositivo e partono appena torna la connessione.
+
+**Come funziona**
+- Una copia dei dati resta sul telefono: l'app si apre subito e funziona anche offline.
+- Se modifichi la stessa voce da due dispositivi nello stesso momento, vince l'ultima modifica inviata.
+- Le foto stanno in una cartella privata dell'archivio, separata da quella dell'investitore: le foto degli aggiornamenti non visibili all'investitore non escono mai.
+- Se accedi con un account che ha già dati online su un dispositivo che ne ha altri, l'app chiede quali tenere.
+- "Elimina i dati da questo dispositivo" non cancella quelli online: tornano alla prossima sincronizzazione. Per cancellare davvero, elimina l'immobile o la voce dall'app.
+- "Ripristina da un backup" sostituisce i dati anche online.
+
 ## Limiti da conoscere
 
 - Chiunque conosca l'indirizzo può provare ad accedere con la propria email, ma non vede niente se non è associata a un immobile condiviso.

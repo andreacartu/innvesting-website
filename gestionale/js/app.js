@@ -101,6 +101,7 @@ window.addEventListener('store:error', () => toast('Impossibile salvare: spazio 
 subscribe(render);
 window.addEventListener('lock:change', render);
 window.addEventListener('cloud:change', render);
+window.addEventListener('sync:change', render);
 initLock({ onLock: clearScreen, onUnlock });
 requestPersistence();
 initCloud();

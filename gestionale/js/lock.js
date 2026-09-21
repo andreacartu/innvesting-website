@@ -9,6 +9,7 @@ import { html } from './dom.js';
 import { icon } from './icons.js';
 import { toast } from './actions.js';
 import { resetAll } from './store.js';
+import { signOutLocal } from './cloud.js';
 
 const CONFIG_KEY = 'innvesting-gestionale-lock';
 const PIN_LENGTH = 6;
@@ -352,14 +353,15 @@ const handlers = {
   delete: pressDelete,
   bio: unlockWithBiometric,
   cancel: cancelChange,
-  forgot() {
-    const ok = confirm('Per proteggere i dati, senza il codice l’unico modo per rientrare è eliminare tutti i dati da questo dispositivo. Potrai poi ripristinarli da un backup. Vuoi procedere?');
+  async forgot() {
+    const ok = confirm('Per proteggere i dati, senza il codice l’unico modo per rientrare è eliminare i dati da questo dispositivo e uscire dall’account. I dati salvati online restano al sicuro: li ritrovi accedendo di nuovo con la tua email. Vuoi procedere?');
     if (!ok) return;
-    resetAll();
+    await signOutLocal(); // senza uscire dall'account, i dati tornerebbero subito dal server e il blocco sarebbe aggirato
+    await resetAll();
     config = null;
     saveConfig();
     setMode('idle');
-    toast('Dati eliminati: crea un nuovo codice');
+    toast('Dati eliminati da questo dispositivo: crea un nuovo codice');
   },
   async 'enable-bio'() {
     try {

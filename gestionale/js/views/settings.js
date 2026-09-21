@@ -8,6 +8,8 @@ import { rootBar } from '../components.js';
 import { biometric, lockNow, startChangePin } from '../lock.js';
 import { exportBackupJson, isEmpty, loadDemo, markBackup, mergeImport, replaceAll, resetAll, state } from '../store.js';
 import { cloud, sendCode, signOut, syncNow, verifyCode } from '../cloud.js';
+import { forgetSyncState, sync, syncData } from '../sync.js';
+import { isConfigured } from '../supabase-client.js';
 import { openForm } from '../sheet.js';
 
 const STALE_AFTER_DAYS = 14;
@@ -73,29 +75,36 @@ function costsCsv() {
 
 const timeOf = iso => new Date(iso).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
 
+/* Riga di stato dell'archivio online: quando è stato allineato l'ultima volta e se ci sono modifiche in attesa. */
+function syncLine() {
+  const pending = sync.pending ? ` ${sync.pending} ${sync.pending === 1 ? 'modifica in attesa' : 'modifiche in attesa'}.` : '';
+  switch (sync.state) {
+    case 'syncing': return `Sincronizzazione in corso…${pending}`;
+    case 'error': return `Non allineato: ${sync.error} Le modifiche restano su questo dispositivo e partono appena possibile.${pending}`;
+    case 'idle': return `Dati online allineati${sync.last ? ` alle ${timeOf(sync.last)}` : ''}.${pending}`;
+    default: return '';
+  }
+}
+
 function cloudSection() {
   switch (cloud.state) {
     case 'off':
-      return html`<div class="notes">La condivisione con gli investitori non è ancora collegata. Segui le istruzioni in gestionale/supabase/LEGGIMI.md: bastano pochi minuti e un account gratuito su Supabase.</div>`;
+      return html`<div class="notes">L’archivio online non è ancora collegato. Segui le istruzioni in gestionale/supabase/LEGGIMI.md: bastano pochi minuti e un account gratuito su Supabase.</div>`;
     case 'checking':
       return html`<p class="muted">Controllo del collegamento…</p>`;
     case 'signed-out':
       return html`
-        <p class="muted">Accedi con la tua email per far vedere a ogni investitore l’avanzamento del suo immobile. Ricevi un codice via email, senza password.</p>
+        <p class="muted">Accedi con la tua email per salvare i dati online: li ritrovi aggiornati su ogni dispositivo, senza importare nulla, e puoi far seguire i lavori ai tuoi investitori. Ricevi un codice via email, senza password.</p>
         <div class="stack section"><button type="button" class="btn btn--primary btn--block" data-action="cloud-sign-in">Accedi</button></div>`;
     default: {
-      const line = {
-        idle: cloud.lastSync ? `Aggiornato alle ${timeOf(cloud.lastSync)}.` : 'Collegato.',
-        syncing: 'Aggiornamento in corso…',
-        error: `Non sincronizzato: ${cloud.error}`,
-        'not-admin': 'Questo account non è abilitato a condividere: vedi le istruzioni in supabase/LEGGIMI.md.',
-      }[cloud.state];
+      const notAdmin = cloud.state === 'not-admin';
       return html`
-        <p class="muted">Collegato come <strong>${cloud.email}</strong>. ${line}</p>
-        <p class="footnote">Per condividere un immobile aprilo, tocca Modifica e attiva “Condividi i lavori in tempo reale”, indicando l’email dell’investitore.</p>
+        <p class="muted">Collegato come <strong>${cloud.email}</strong>. ${notAdmin ? 'Questo account non è abilitato: vedi le istruzioni in supabase/LEGGIMI.md.' : syncLine()}</p>
+        ${!notAdmin && html`<p class="footnote">I dati sono salvati online e si aggiornano da soli su tutti i dispositivi in cui accedi con questa email. Una copia resta sul telefono, così l’app si apre subito e funziona anche senza rete.</p>`}
+        ${!notAdmin && html`<p class="footnote">Per far vedere un immobile a un investitore aprilo, tocca Modifica e attiva “Condividi i lavori in tempo reale”, indicando la sua email.</p>`}
         <div class="stack section">
-          ${cloud.state !== 'not-admin' && html`<button type="button" class="btn btn--outline btn--block" data-action="cloud-sync">Aggiorna ora</button>`}
-          <button type="button" class="btn btn--outline btn--block" data-action="cloud-sign-out">Esci dalla condivisione</button>
+          ${!notAdmin && html`<button type="button" class="btn btn--outline btn--block" data-action="cloud-sync">Aggiorna ora</button>`}
+          <button type="button" class="btn btn--outline btn--block" data-action="cloud-sign-out">Esci dall’account</button>
         </div>`;
     }
   }
@@ -108,10 +117,10 @@ export function settingsView() {
   const body = html`
     <p class="eyebrow">Impostazioni</p>
     <h1 class="page-title">Dati e backup</h1>
-    <p class="lead">I dati restano su questo dispositivo, senza server né account. Il backup è la tua copia di sicurezza.</p>
+    <p class="lead">${cloud.state === 'idle' || cloud.state === 'syncing' || cloud.state === 'error' ? 'I dati sono salvati online e sempre aggiornati su tutti i tuoi dispositivi. Il backup è una copia di sicurezza in più.' : 'I dati restano su questo dispositivo finché non accedi all’archivio online. Il backup è la tua copia di sicurezza.'}</p>
 
     <section class="section">
-      <div class="section__head"><h2 class="section__title">Condivisione online</h2></div>
+      <div class="section__head"><h2 class="section__title">Archivio online</h2></div>
       ${cloudSection()}
     </section>
 
@@ -157,8 +166,8 @@ export function settingsView() {
     <section class="section">
       <div class="section__head"><h2 class="section__title">Archivio</h2></div>
       <div class="stack">
-        ${empty && html`<button type="button" class="btn btn--outline btn--block" data-action="load-demo">Carica dati di esempio</button>`}
-        <button type="button" class="btn btn--outline btn--block btn--danger" data-action="reset-all" ${empty && html`disabled`}>Elimina tutti i dati</button>
+        ${empty && !isConfigured() && html`<button type="button" class="btn btn--outline btn--block" data-action="load-demo">Carica dati di esempio</button>`}
+        <button type="button" class="btn btn--outline btn--block btn--danger" data-action="reset-all" ${empty && html`disabled`}>Elimina i dati da questo dispositivo</button>
       </div>
     </section>`;
 
@@ -173,7 +182,8 @@ export function settingsView() {
         try {
           const imported = JSON.parse(await file.text());
           const counts = `${imported.properties?.length ?? 0} immobili, ${imported.suppliers?.length ?? 0} fornitori, ${imported.costs?.length ?? 0} costi`;
-          if (!confirm(`Ripristinare il backup (${counts})? I dati attuali su questo dispositivo verranno sostituiti.`)) return;
+          const online = cloud.state === 'idle' || cloud.state === 'syncing' || cloud.state === 'error';
+          if (!confirm(`Ripristinare il backup (${counts})? I dati attuali verranno sostituiti${online ? ', anche quelli salvati online' : ' su questo dispositivo'}.`)) return;
           await replaceAll(imported);
           toast('Backup ripristinato');
         } catch (error) {
@@ -218,9 +228,15 @@ registerActions({
     toast('Dati di esempio caricati');
   },
   'reset-all': async () => {
-    if (!confirm('Eliminare tutti i dati (immobili, fornitori, costi e pagamenti) da questo dispositivo? Se non hai un backup, non si potranno recuperare.')) return;
+    const online = cloud.state === 'idle' || cloud.state === 'syncing' || cloud.state === 'error';
+    const question = online
+      ? 'Eliminare i dati da questo dispositivo? Quelli salvati online restano al sicuro e torneranno alla prossima sincronizzazione.'
+      : 'Eliminare tutti i dati (immobili, fornitori, costi e pagamenti) da questo dispositivo? Se non hai un backup, non si potranno recuperare.';
+    if (!confirm(question)) return;
     await resetAll();
-    toast('Archivio svuotato');
+    forgetSyncState(); // ripartendo da zero, i dati online tornano per intero
+    if (online) syncData();
+    toast('Dati eliminati da questo dispositivo');
   },
 });
 
@@ -263,7 +279,7 @@ registerActions({
     });
     if (done) toast('Accesso eseguito');
   },
-  'cloud-sync': () => syncNow(),
+  'cloud-sync': () => { syncData(); syncNow(); },
   'cloud-sign-out': async () => {
     await signOut();
     toast('Uscito dalla condivisione');

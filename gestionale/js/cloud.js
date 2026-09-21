@@ -8,6 +8,7 @@ import { state, subscribe } from './store.js';
 import { getPhotoBlob } from './photos.js';
 import { buildSnapshot, snapshotPhotoIds } from './snapshot.js';
 import { BUCKET, getClient, isConfigured, photoPath } from './supabase-client.js';
+import { forgetSyncState, startSync, stopSync } from './sync.js';
 
 export { isConfigured };
 
@@ -62,11 +63,26 @@ export async function signOut() {
 }
 
 async function refreshSession(session) {
-  if (!session) return setStatus({ state: 'signed-out', email: '', error: '' });
-  const { data: isAdmin, error } = await (await client()).rpc('is_admin');
-  if (error || !isAdmin) return setStatus({ state: 'not-admin', email: session.user.email, error: '' });
+  if (!session) {
+    stopSync();
+    return setStatus({ state: 'signed-out', email: '', error: '' });
+  }
+  const supabase = await client();
+  const { data: isAdmin, error } = await supabase.rpc('is_admin');
+  if (error || !isAdmin) {
+    stopSync();
+    return setStatus({ state: 'not-admin', email: session.user.email, error: '' });
+  }
   setStatus({ state: 'idle', email: session.user.email, error: '' });
+  startSync({ supabase, ownerId: session.user.id }); // dati online: da qui l'app scarica e invia le modifiche
   scheduleSync();
+}
+
+/* Esce dall'account solo su questo dispositivo e dimentica lo stato dell'allineamento (per esempio quando si dimentica il codice di sblocco). */
+export async function signOutLocal() {
+  try { await (await client()).auth.signOut({ scope: 'local' }); } catch { /* già fuori */ }
+  stopSync();
+  forgetSyncState();
 }
 
 export async function initCloud() {

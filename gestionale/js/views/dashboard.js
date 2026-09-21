@@ -5,6 +5,8 @@ import { openPayments, overallTotals, propertySummary } from '../calc.js';
 import { bar, paymentRow, rootBar } from '../components.js';
 import { state } from '../store.js';
 import { backupIsStale } from './settings.js';
+import { cloud } from '../cloud.js';
+import { isConfigured } from '../supabase-client.js';
 import { propertyCard } from './properties.js';
 
 const UPCOMING = 5;
@@ -18,7 +20,8 @@ function welcome() {
       <p class="lead">Registra immobili, fornitori, spese e acconti. Quello che oggi sta tra messaggi, fogli di calcolo e cartelle, qui è ordinato e sempre a portata di mano.</p>
       <div class="btn-row">
         <button type="button" class="btn btn--primary" data-action="new-property">${icon('plus', 20)}Aggiungi il primo immobile</button>
-        <button type="button" class="btn btn--outline" data-action="load-demo">Prova con dati di esempio</button>
+        ${!isConfigured() && html`<button type="button" class="btn btn--outline" data-action="load-demo">Prova con dati di esempio</button>`}
+        ${cloud.state === 'signed-out' && html`<a class="btn btn--outline" href="#/altro">Accedi per ritrovare i dati online</a>`}
       </div>
     </section>`;
 }
@@ -34,7 +37,8 @@ export function dashboardView() {
   const active = properties.filter(p => p.stato !== 'venduto');
 
   const body = html`
-    ${backupIsStale() && html`<div class="alert">${icon('alert', 20)}<p>Non fai un backup da un po’. I dati sono salvati solo su questo dispositivo: <a href="#/altro">esegui un backup</a>.</p></div>`}
+    ${cloud.state === 'signed-out' && html`<div class="alert">${icon('alert', 20)}<p>I dati sono solo su questo dispositivo. <a href="#/altro">Accedi</a> per salvarli online e ritrovarli ovunque.</p></div>`}
+    ${cloud.state === 'off' && backupIsStale() && html`<div class="alert">${icon('alert', 20)}<p>Non fai un backup da un po’. I dati sono salvati solo su questo dispositivo: <a href="#/altro">esegui un backup</a>.</p></div>`}
     <p class="eyebrow">Oggi</p>
     <h1 class="page-title">Panoramica</h1>
 
