@@ -11,18 +11,23 @@ const ICONS = {
 const icon = (name) =>
   `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg>`;
 
+// Screen-reader labels, in the page's own language (this script is shared by the Italian and English pages).
+const L = document.documentElement.lang === 'en'
+  ? { dialog: 'Enlarged photo', close: 'Close', prev: 'Previous photo', next: 'Next photo' }
+  : { dialog: 'Foto ingrandita', close: 'Chiudi', prev: 'Foto precedente', next: 'Foto successiva' };
+
 const createLightbox = () => {
   const dialog = document.createElement('dialog');
   dialog.className = 'lightbox';
-  dialog.setAttribute('aria-label', 'Foto ingrandita');
+  dialog.setAttribute('aria-label', L.dialog);
   dialog.innerHTML = `
-    <button type="button" class="lightbox__btn lightbox__btn--close" aria-label="Chiudi">${icon('close')}</button>
-    <button type="button" class="lightbox__btn lightbox__btn--prev" aria-label="Foto precedente">${icon('prev')}</button>
+    <button type="button" class="lightbox__btn lightbox__btn--close" aria-label="${L.close}">${icon('close')}</button>
+    <button type="button" class="lightbox__btn lightbox__btn--prev" aria-label="${L.prev}">${icon('prev')}</button>
     <figure class="lightbox__figure">
       <img class="lightbox__img" alt="">
       <figcaption class="lightbox__caption"></figcaption>
     </figure>
-    <button type="button" class="lightbox__btn lightbox__btn--next" aria-label="Foto successiva">${icon('next')}</button>`;
+    <button type="button" class="lightbox__btn lightbox__btn--next" aria-label="${L.next}">${icon('next')}</button>`;
   document.body.appendChild(dialog);
   return dialog;
 };
