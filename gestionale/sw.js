@@ -2,7 +2,7 @@
 // File dell'app: prima la rete (così gli aggiornamenti arrivano subito), la copia salvata se si è offline.
 // Font e altre risorse esterne: prima la copia salvata.
 
-const CACHE = 'innvesting-gestionale-v15';
+const CACHE = 'innvesting-gestionale-v16';
 
 // Solo file statici (font e libreria): mai dati degli immobili.
 const STATIC_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net'];
@@ -39,6 +39,7 @@ const SHELL = [
   'manifest-investitore.json',
   'js/lock.js',
   'js/labels.js',
+  'js/confirm.js',
   'js/sheet.js',
   'js/store.js',
   'js/ui-state.js',

@@ -5,7 +5,7 @@
 // all'apertura, quando l'app torna in primo piano e in tempo reale, appena qualcosa cambia online.
 // Se due dispositivi modificano lo stesso elemento contemporaneamente, vince l'ultimo che invia.
 
-import { allEntities, applyRemote, entityOf, isEmpty, markAllForUpload, pendingCount, pendingEntries, queueDelete, settleEntries, state, subscribe, wipeLocal } from './store.js';
+import { applyRemote, entityOf, isEmpty, markAllForUpload, pendingCount, pendingEntries, settleEntries, state, subscribe } from './store.js';
 import { getPhotoBlob, putPhotoBlob, setPhotoFetcher } from './photos.js';
 import { BUCKET, privatePhotoPath } from './supabase-client.js';
 
@@ -54,38 +54,15 @@ let unsubscribeStore;
 
 /* ── Primo allineamento con un account ──────────────────────────────────── */
 
-async function serverKeys() {
-  const { supabase, ownerId } = context;
-  const { data, error } = await supabase.from('records').select('kind,id').eq('owner_id', ownerId).eq('deleted', false);
-  if (error) throw new Error(error.message);
-  return data;
-}
-
+// Prima sincronizzazione con questo account su questo dispositivo: non si sceglie quale copia tenere e non si
+// cancella mai nulla in automatico. Quello che c'è già qui parte verso il server (markAllForUpload), quello che
+// c'è già sul server arriva con la pull che segue: le due copie si uniscono per identificativo, senza sovrascriversi
+// a vicenda. (In passato si chiedeva di scegliere con una finestra del browser, inaffidabile nell'app installata:
+// poteva risolversi da sola e cancellare per sbaglio i dati del dispositivo.)
 async function initialize() {
   const saved = readState();
   if (saved.owner === context.ownerId && saved.cursor) return;
-
-  // La copia sul telefono appartiene a un altro account: il database di questo è l'unica fonte.
-  if (saved.owner && saved.owner !== context.ownerId) await wipeLocal();
-
-  const onServer = await serverKeys();
-  const hasLocal = !isEmpty();
-
-  if (onServer.length && hasLocal) {
-    const useServer = confirm(
-      'Online ci sono già dei dati. Premi OK per usare quelli online: i dati di questo dispositivo vengono sostituiti. ' +
-      'Premi Annulla per caricare invece quelli di questo dispositivo: i dati online vengono sostituiti.'
-    );
-    if (useServer) {
-      await wipeLocal();
-    } else {
-      const local = new Set(allEntities().map(({ kind, id }) => `${kind}:${id}`));
-      onServer.filter(({ kind, id }) => !local.has(`${kind}:${id}`)).forEach(({ kind, id }) => queueDelete(kind, id));
-      markAllForUpload();
-    }
-  } else if (hasLocal) {
-    markAllForUpload();
-  }
+  if (!isEmpty()) markAllForUpload();
   writeState({ owner: context.ownerId, cursor: EPOCH });
 }
 

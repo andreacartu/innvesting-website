@@ -5,6 +5,7 @@ import { html, raw } from './dom.js';
 import { icon } from './icons.js';
 import { moneyToInput, parseMoney } from './format.js';
 import { hydratePhotos } from './photos.js';
+import { confirmDialog } from './confirm.js';
 
 const optionsOf = field => (typeof field.options === 'function' ? field.options() : field.options ?? []);
 
@@ -171,8 +172,9 @@ export function openForm({ title, fields, values = {}, submitLabel = 'Salva', on
       }
     });
 
-    root.querySelector('[data-delete]')?.addEventListener('click', () => {
-      if (!confirm(deleteMessage)) return;
+    root.querySelector('[data-delete]')?.addEventListener('click', async () => {
+      const ok = await confirmDialog({ title: 'Eliminare?', message: deleteMessage, okLabel: deleteLabel, danger: true });
+      if (!ok) return;
       onDelete();
       close({ deleted: true });
     });

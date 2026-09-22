@@ -28,7 +28,7 @@ const formatEuro = value => `${value.toLocaleString('it-IT', { maximumFractionDi
 function categoryOf(tipo, sub, description) {
   const text = `${tipo} ${sub} ${description}`.toLowerCase();
   if (/bagno/i.test(tipo)) return 'bagni';
-  if (/notaio|intermediazione|agente/.test(text)) return 'altro';
+  if (/notaio|intermediazione|agente/.test(text)) return 'intermediazione';
   if (/architett|progett|consulenza/.test(text)) return 'progetto';
   if (/caldaia|riscaldamento|condizionator|termostat/.test(text)) return 'termico';
   if (/infissi|portoncino|porte/.test(text)) return 'serramenti';

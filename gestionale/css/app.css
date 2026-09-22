@@ -388,6 +388,11 @@ button { cursor: pointer; }
 .sheet__footer { display: flex; gap: 10px; padding: 12px var(--gutter) calc(12px + var(--safe-bottom)); border-top: 1px solid var(--color-line); }
 .sheet__footer .btn--primary { flex: 1; }
 
+/* Conferma a comparsa (js/confirm.js): lo stesso foglio, ma con un messaggio invece del modulo a griglia */
+.confirm-panel .sheet__body { display: block; }
+.confirm-panel__message { margin-top: 8px; }
+.confirm-panel__footer .btn { flex: 1; }
+
 @keyframes slide-up { from { transform: translateY(100%); } to { transform: none; } }
 @keyframes slide-down { to { transform: translateY(100%); } }
 @keyframes fade-in { from { opacity: 0; } }

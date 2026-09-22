@@ -12,6 +12,7 @@ import { cloud, sendCode, signOut, syncNow, verifyCode } from '../cloud.js';
 import { forgetSyncState, sync, syncData } from '../sync.js';
 import { isConfigured } from '../supabase-client.js';
 import { openForm } from '../sheet.js';
+import { confirmDialog } from '../confirm.js';
 
 const STALE_AFTER_DAYS = 14;
 
@@ -214,7 +215,12 @@ export function settingsView() {
           const imported = JSON.parse(await file.text());
           const counts = `${imported.properties?.length ?? 0} immobili, ${imported.suppliers?.length ?? 0} fornitori, ${imported.costs?.length ?? 0} costi`;
           const online = cloud.state === 'idle' || cloud.state === 'syncing' || cloud.state === 'error';
-          if (!confirm(`Ripristinare il backup (${counts})? I dati attuali verranno sostituiti${online ? ', anche quelli salvati online' : ' su questo dispositivo'}.`)) return;
+          const ok = await confirmDialog({
+            title: 'Ripristinare il backup?',
+            message: `I dati attuali (${counts} nel file) verranno sostituiti${online ? ', anche quelli salvati online' : ' su questo dispositivo'}.`,
+            okLabel: 'Ripristina', danger: true,
+          });
+          if (!ok) return;
           await replaceAll(imported);
           toast('Backup ripristinato');
         } catch (error) {
@@ -240,7 +246,8 @@ export function settingsView() {
         try {
           const imported = JSON.parse(await file.text());
           const counts = `${imported.properties?.length ?? 0} immobili, ${imported.suppliers?.length ?? 0} fornitori, ${imported.costs?.length ?? 0} costi`;
-          if (!confirm(`Aggiungere al gestionale il contenuto del file (${counts})? Quello che c’è già non viene modificato.`)) return;
+          const ok = await confirmDialog({ title: 'Importare il file?', message: `Si aggiunge il contenuto del file (${counts}). Quello che c’è già non viene modificato.`, okLabel: 'Importa' });
+          if (!ok) return;
           const added = mergeImport(imported);
           toast(added.properties || added.costs ? `Aggiunti ${added.properties} immobile e ${added.costs} costi` : 'Niente di nuovo: il file era già stato importato');
         } catch (error) {
@@ -264,18 +271,19 @@ registerActions({
   'export-csv': async () => {
     if (await deliverFile(`innvesting-costi-${todayISO()}.csv`, 'text/csv', costsCsv())) toast('Elenco dei costi esportato');
   },
-  'load-demo': () => {
-    if (!isEmpty() && !confirm('Caricare i dati di esempio sostituisce quelli attuali. Continuare?')) return;
+  'load-demo': async () => {
+    if (!isEmpty() && !(await confirmDialog({ title: 'Caricare i dati di esempio?', message: 'Sostituiscono quelli attuali su questo dispositivo.', okLabel: 'Carica', danger: true }))) return;
     loadDemo();
     location.hash = '#/';
     toast('Dati di esempio caricati');
   },
   'reset-all': async () => {
     const online = cloud.state === 'idle' || cloud.state === 'syncing' || cloud.state === 'error';
-    const question = online
-      ? 'Eliminare i dati da questo dispositivo? Quelli salvati online restano al sicuro e torneranno alla prossima sincronizzazione.'
-      : 'Eliminare tutti i dati (immobili, fornitori, costi e pagamenti) da questo dispositivo? Se non hai un backup, non si potranno recuperare.';
-    if (!confirm(question)) return;
+    const message = online
+      ? 'Quelli salvati online restano al sicuro e torneranno alla prossima sincronizzazione.'
+      : 'Immobili, fornitori, costi e pagamenti. Se non hai un backup, non si potranno recuperare.';
+    const ok = await confirmDialog({ title: 'Eliminare i dati da questo dispositivo?', message, okLabel: 'Elimina', danger: true });
+    if (!ok) return;
     await resetAll();
     forgetSyncState(); // ripartendo da zero, i dati online tornano per intero
     if (online) syncData();
