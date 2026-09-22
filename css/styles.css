@@ -312,6 +312,7 @@ body > section > .container, body > footer > .container { position: relative; z-
 .main-nav { display: flex; flex-wrap: wrap; gap: clamp(10px, 1.3vw, 22px); align-items: center; }
 .main-nav a { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--color-text); }
 .main-nav .btn { font-size: 13px; }
+.nav-more { display: none; } /* voci secondarie: fuori dalla barra desktop per non andare a capo, restano nel menu mobile */
 .back-link { font-family: var(--font-heading); font-weight: 800; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent); }
 .site-header__actions { display: flex; align-items: center; gap: 16px; }
 .lang-switch { font-size: 12px; letter-spacing: .06em; padding: 6px 14px; }
@@ -329,6 +330,7 @@ body > section > .container, body > footer > .container { position: relative; z-
     padding: 8px clamp(20px, 4vw, 48px) 20px;
   }
   .main-nav.main-nav--open { display: flex; }
+  .nav-more { display: block; }
   .main-nav a:not(.btn) { padding: 14px 0; border-top: 1px solid var(--color-divider); }
   .main-nav .btn { margin-top: 16px; }
 }
