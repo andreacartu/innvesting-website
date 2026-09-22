@@ -124,7 +124,7 @@ async function importExcel(plan) {
       { type: 'note', text: `Nel foglio “${plan.sheetName}” ci sono ${plan.costs.length} spese confermate${plan.excluded.length ? `, più ${plan.excluded.length} non confermate che vengono ignorate` : ''}.` },
       { name: 'propertyId', label: 'Immobile da aggiornare', type: 'select', options: properties.map(p => ({ value: p.id, label: `${propertyCode(p)} · ${p.nome}` })), placeholder: 'Nuovo immobile' },
       { name: 'nome', label: 'Nome del nuovo immobile', placeholder: 'Solo se scegli “Nuovo immobile”' },
-      { type: 'note', text: 'Importi, IVA, fornitori e pagato delle voci del foglio si aggiornano. Foto, dati dell’investitore, aggiornamenti di cantiere e le voci create nell’app restano.' },
+      { type: 'note', text: 'Importi, IVA, fornitori e pagato delle voci del foglio si aggiornano, anche se nel frattempo li avevi corretti in app. Le voci già importate in passato che non compaiono più nel foglio vengono eliminate. Foto, dati dell’investitore, aggiornamenti di cantiere e le voci create nell’app restano.' },
     ],
     submitLabel: 'Importa',
     onSubmit: values => {
