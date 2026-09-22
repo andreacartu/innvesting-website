@@ -186,19 +186,26 @@ export function openForm({ title, fields, values = {}, submitLabel = 'Salva', on
       });
     });
 
-    // Campo percentuale legato a un importo: scrivendo l'uno si aggiorna l'altro.
-    fields.filter(f => f.type === 'percent' && f.linkedTo && f.base > 0).forEach(field => {
+    // Campo percentuale legato a un importo: scrivendo l'uno si aggiorna l'altro. La base è un numero fisso
+    // (field.base) oppure dipende da un altro campo select (field.baseField + field.baseValues, es. "% su acquisto o su vendita").
+    fields.filter(f => f.type === 'percent' && f.linkedTo && (f.base > 0 || f.baseField)).forEach(field => {
       const percentInput = form.elements[field.name];
       const amountInput = form.elements[field.linkedTo];
+      const baseSelect = field.baseField ? form.elements[field.baseField] : null;
       const round = n => Math.round((n + Number.EPSILON) * 100) / 100;
+      const currentBase = () => (baseSelect ? Number(field.baseValues?.[baseSelect.value] ?? 0) : field.base);
       amountInput.addEventListener('input', () => {
         const amount = parseMoney(amountInput.value);
-        percentInput.value = amount === null ? '' : moneyToInput(round((amount / field.base) * 100));
+        const base = currentBase();
+        percentInput.value = amount === null || !base ? '' : moneyToInput(round((amount / base) * 100));
       });
       percentInput.addEventListener('input', () => {
         const pct = parseMoney(percentInput.value);
-        amountInput.value = pct === null ? '' : moneyToInput(round((field.base * pct) / 100));
+        const base = currentBase();
+        amountInput.value = pct === null || !base ? '' : moneyToInput(round((base * pct) / 100));
       });
+      // Cambiando la base si aggiorna solo la percentuale mostrata, mai l'importo già scritto.
+      baseSelect?.addEventListener('change', () => amountInput.dispatchEvent(new Event('input', { bubbles: true })));
     });
 
     // "+ Nuovo fornitore" dentro un menu: apre un secondo foglio e, al ritorno, seleziona la voce appena creata.

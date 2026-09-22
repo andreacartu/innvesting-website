@@ -22,6 +22,7 @@ export const CATEGORIE_COSTO = [
   { value: 'elettrodomestici', label: 'Elettrodomestici' },
   { value: 'tinteggiatura', label: 'Tinteggiatura' },
   { value: 'esterni', label: 'Giardino ed esterni' },
+  { value: 'intermediazione', label: 'Notaio, agenzia e intermediazioni' },
   { value: 'altro', label: 'Altro' },
 ];
 

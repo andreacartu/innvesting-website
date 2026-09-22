@@ -121,6 +121,15 @@ export function openSupplierForm(id) {
 
 export function openCostForm({ id, propertyId, supplierId } = {}) {
   const cost = id ? getCost(id) : null;
+  const property = getProperty(cost?.propertyId ?? propertyId);
+  const prezzoVendita = property?.prezzoVendita || property?.prezzoObiettivo || 0;
+
+  // Per spese come la provvigione dell'agenzia, più comode da pensare in percentuale che a importo fisso:
+  // il campo compare solo se l'immobile ha già un prezzo (di acquisto o di vendita) su cui calcolarla.
+  const basiPercentuale = [
+    property?.prezzoAcquisto && { value: 'acquisto', label: `Acquisto (${euro(property.prezzoAcquisto)})` },
+    prezzoVendita && { value: 'vendita', label: `Vendita (${euro(prezzoVendita)})` },
+  ].filter(Boolean);
 
   return openForm({
     title: cost ? 'Modifica costo' : 'Nuovo costo',
@@ -132,6 +141,12 @@ export function openCostForm({ id, propertyId, supplierId } = {}) {
       { name: 'categoria', label: 'Categoria', type: 'select', options: CATEGORIE_COSTO },
       { name: 'supplierId', label: 'Fornitore', type: 'select', options: supplierOptions, placeholder: 'Nessun fornitore', allowNew: { label: 'Nuovo fornitore', create: () => openSupplierForm() } },
       { name: 'importo', label: 'Importo', type: 'money', required: true, half: true },
+      ...(basiPercentuale.length ? [
+        { name: 'baseCalcolo', label: 'Oppure percentuale su', type: 'select', half: true, transient: true, noEmpty: true, options: basiPercentuale },
+        { name: 'percentuale', label: 'Percentuale', type: 'percent', half: true, transient: true, linkedTo: 'importo',
+          baseField: 'baseCalcolo', baseValues: { acquisto: property?.prezzoAcquisto || 0, vendita: prezzoVendita },
+          hint: 'Utile per la provvigione dell’agenzia: scrivi la percentuale e l’importo si calcola da solo.' },
+      ] : []),
       { name: 'iva', label: 'IVA', type: 'select', cast: 'number', options: ALIQUOTE_IVA, half: true, noEmpty: true },
       { name: 'data', label: 'Data', type: 'date' },
       { name: 'link', label: 'Link al documento', type: 'url', placeholder: 'https://…', hint: 'Facoltativo: il link al preventivo o alla fattura salvati su Drive, Dropbox o iCloud.' },
