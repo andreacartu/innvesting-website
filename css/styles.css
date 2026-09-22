@@ -363,6 +363,18 @@ body > section > .container, body > footer > .container { position: relative; z-
 .step h3 { font-size: 22px; margin: 0 0 10px; letter-spacing: -0.015em; }
 .step p { font-size: 16px; line-height: 1.65; margin: 0; max-width: 70ch; }
 
+/* — area riservata (anteprima dell'area investitore) — */
+.portal-grid {
+  display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: 8px; margin-bottom: -8px;
+}
+.portal-card { flex: 0 0 min(250px, 68vw); scroll-snap-align: start; margin: 0; }
+.portal-card__frame { padding: 8px; background: var(--color-bg); border: 1px solid var(--color-divider); box-shadow: var(--shadow-md); }
+.portal-card__frame img { display: block; width: 100%; aspect-ratio: 3 / 5.5; object-fit: cover; object-position: top; }
+.portal-card h3 { font-size: 17px; margin: 14px 0 6px; letter-spacing: -0.01em; }
+.portal-card p { font-size: 14px; line-height: 1.55; margin: 0; color: var(--color-neutral-800); }
+.portal-note { font-size: 13px; line-height: 1.6; margin: 20px 0 0; color: var(--color-neutral-700); }
+
 /* — case studies grid (casi reali) — */
 .case-grid {
   display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
