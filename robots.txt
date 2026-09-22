@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /gestionale/
+
+Sitemap: https://innvesting.it/sitemap.xml
