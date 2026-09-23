@@ -373,8 +373,16 @@ body > section > .container, body > footer > .container { position: relative; z-
   padding-bottom: 8px; margin-bottom: -8px;
 }
 .portal-card { flex: 0 0 min(250px, 68vw); scroll-snap-align: start; margin: 0; }
-.portal-card__frame { padding: 8px; background: var(--color-bg); border: 1px solid var(--color-divider); box-shadow: var(--shadow-md); }
-.portal-card__frame img { display: block; width: 100%; aspect-ratio: 3 / 5.5; object-fit: cover; object-position: top; }
+/* Cornice da telefono: bordo scuro sottile e uniforme su tutti i lati (niente rese fotorealistiche, coerenti con
+   il resto del sito), con un piccolo sensore in cima, interamente dentro il bordo — così non copre mai il
+   contenuto dello screenshot, qualunque esso sia. Basta a far leggere a colpo d'occhio che è un'app. */
+.portal-card__frame { position: relative; padding: 9px; background: var(--color-text); border-radius: 34px; box-shadow: var(--shadow-lg); }
+.portal-card__screen { overflow: hidden; border-radius: 25px; background: var(--color-bg); }
+.portal-card__screen img { display: block; width: 100%; aspect-ratio: 3 / 5.5; object-fit: cover; object-position: top; }
+.portal-card__notch {
+  position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
+  width: 56px; height: 5px; border-radius: 999px; background: rgba(255, 255, 255, .14);
+}
 .portal-card h3 { font-size: 17px; margin: 14px 0 6px; letter-spacing: -0.01em; }
 .portal-card p { font-size: 14px; line-height: 1.55; margin: 0; color: var(--color-neutral-800); }
 .portal-note { font-size: 13px; line-height: 1.6; margin: 20px 0 0; color: var(--color-neutral-700); }
